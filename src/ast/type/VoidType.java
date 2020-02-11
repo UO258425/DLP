@@ -1,4 +1,10 @@
 package ast.type;
 
-public class VoidType implements Type {
+import ast.AbstractASTNode;
+
+public class VoidType extends AbstractASTNode implements Type {
+
+    public VoidType(int line, int column) {
+        super(line, column);
+    }
 }
