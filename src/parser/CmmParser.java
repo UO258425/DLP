@@ -17,7 +17,7 @@ public class CmmParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		WHITE_SPACE=1, NEW_LINE=2, TAB=3, MULTILINE_COMMENT=4, SINGLE_LINE_COMMENT=5, 
+		WHITE_SPACE=1, NEW_LINE=2, TAB=3, SINGLE_LINE_COMMENT=4, MULTILINE_COMMENT=5, 
 		ID=6, REAL_CONSTANT=7, INT_CONSTANT=8, CHAR_CONSTANT=9;
 	public static final int
 		RULE_program = 0;
@@ -35,7 +35,7 @@ public class CmmParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "WHITE_SPACE", "NEW_LINE", "TAB", "MULTILINE_COMMENT", "SINGLE_LINE_COMMENT", 
+			null, "WHITE_SPACE", "NEW_LINE", "TAB", "SINGLE_LINE_COMMENT", "MULTILINE_COMMENT", 
 			"ID", "REAL_CONSTANT", "INT_CONSTANT", "CHAR_CONSTANT"
 		};
 	}
@@ -91,9 +91,9 @@ public class CmmParser extends Parser {
 	}
 
 	public static class ProgramContext extends ParserRuleContext {
-		public List<TerminalNode> SINGLE_LINE_COMMENT() { return getTokens(CmmParser.SINGLE_LINE_COMMENT); }
-		public TerminalNode SINGLE_LINE_COMMENT(int i) {
-			return getToken(CmmParser.SINGLE_LINE_COMMENT, i);
+		public List<TerminalNode> MULTILINE_COMMENT() { return getTokens(CmmParser.MULTILINE_COMMENT); }
+		public TerminalNode MULTILINE_COMMENT(int i) {
+			return getToken(CmmParser.MULTILINE_COMMENT, i);
 		}
 		public ProgramContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -111,11 +111,11 @@ public class CmmParser extends Parser {
 			setState(5);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==SINGLE_LINE_COMMENT) {
+			while (_la==MULTILINE_COMMENT) {
 				{
 				{
 				setState(2);
-				match(SINGLE_LINE_COMMENT);
+				match(MULTILINE_COMMENT);
 				}
 				}
 				setState(7);

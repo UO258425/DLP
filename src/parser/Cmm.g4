@@ -7,9 +7,9 @@ WHITE_SPACE: ' '+ -> skip;
 NEW_LINE: ('\n'|'\r')+ -> skip;
 TAB: '\t'+ -> skip;
 
-MULTILINE_COMMENT: '/*' .*?('*/') '*/';
-
 SINGLE_LINE_COMMENT: '//' .*?('\n'| EOF) ;
+MULTILINE_COMMENT: '/*' .*?('*/') ;
+
 
 ID: (LETTER|'_')(LETTER|'_'|DIGIT)*;
 
