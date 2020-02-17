@@ -18,7 +18,7 @@ public class CmmParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		WHITE_SPACE=1, NEW_LINE=2, TAB=3, SINGLE_LINE_COMMENT=4, MULTILINE_COMMENT=5, 
-		ID=6, REAL_CONSTANT=7, INT_CONSTANT=8, CHAR_CONSTANT=9;
+		REAL_CONSTANT=6, ID=7, INT_CONSTANT=8, CHAR_CONSTANT=9;
 	public static final int
 		RULE_program = 0;
 	private static String[] makeRuleNames() {
@@ -36,7 +36,7 @@ public class CmmParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, "WHITE_SPACE", "NEW_LINE", "TAB", "SINGLE_LINE_COMMENT", "MULTILINE_COMMENT", 
-			"ID", "REAL_CONSTANT", "INT_CONSTANT", "CHAR_CONSTANT"
+			"REAL_CONSTANT", "ID", "INT_CONSTANT", "CHAR_CONSTANT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
