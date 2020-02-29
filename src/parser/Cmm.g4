@@ -19,28 +19,40 @@ definition returns [List<Definition> ast = new ArrayList<Definition>()]:
 ;
 
 mainFunction returns [Definition ast]:
-    void='void' main='main' '(' ')' functionBlock
+    voidType main='main' '(' ')' functionBlock
+    { $ast = new FunctionDefinition($void.getLine(), $void.getCharPositionInLine()+1,
+                         $functionBlock.ast, new FunctionType($voidType.ast),
+                         "main");}
+
 ;
 
-variableDefinition returns [List<Definition> ast = new ArrayList<Definition>()]
-                    locals [List<RecordField> fields = new ArrayList<RecordField>()]:
+voidType returns [Type ast]:
+    void='void' {$ast = new VoidType($void.getLine(), $void.getCharPositionInLine()+1);}
+;
 
+variableDefinition returns [List<Definition> ast = new ArrayList<Definition>()]:
       type id1=ID { $ast.add(new VariableDefinition($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $id1.text));}
         (',' id2=ID { $ast.add(new VariableDefinition($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $id2.text));})* ';'
-
-    | struct='struct' '{' (variableDefinition {$fields.add($variableDefinition.ast);})+ '}' ID ';'
-        { $ast.add(new RecordType($struct.getLine(), $struct.getCharPositionInLine()+1, $fields, $ID.text));}
 ;
 
 functionDefinition returns [Definition ast]:
-    type ID '('functionArguments')' functionBlock
+    type ID '('functionParameters')' functionBlock
+    {$ast = new FunctionDefinition($type.getLine(), $type.getCharPositionInLine()+1,
+                $functionBlock.ast,
+                new FunctionType($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $functionParameters.ast),
+                $ID.text);}
 ;
 
-functionArguments:
-                 | type ID (',' type ID)*
+functionParameters returns[List<VariableDefinition> ast = new ArrayList<VariableDefinition>()]:
+   | type id1=ID { $ast.add(new VariableDefinition($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $id1.text));}
+     (',' id2=ID { $ast.add(new VariableDefinition($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $id2.text));})*
 ;
 
-functionBlock: '{' variableDefinition* statement* '}'
+functionBlock returns [List<Statement> ast = new ArrayList<Statement>()]:
+    '{'
+        (variableDefinition {$ast.addAll($variableDefinition.ast);})*
+        (statement {$ast.addAll($statement.ast);})*
+    '}'
 ;
 
 statement returns [List<Statement> ast = new ArrayList<Statement>()]
@@ -72,14 +84,15 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()]
          | write='write' exp1=expression { $ast.add(new Write($write.getLine(), $write.getCharPositionInLine()+1, $exp1.ast));}
                 (',' exps2=expression { $ast.add(new Write($write.getLine(), $write.getCharPositionInLine()+1, $exps2.ast)); })* ';'
 
-         | ID '(' functionParameters')' ';'
+         | ID '(' functionArguments')' ';'
                  { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
                                                 new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
-                                                $functionParameters.ast);}
+                                                $functionArguments.ast);}
 ;
 
-functionParameters:
-                    | expression (',' expression)*
+functionArguments returns[List<Expression> ast = new ArrayList<Expression>()]:
+    | expression {$ast.add($expression.ast);}
+      (',' expression {$ast.add($expression.ast);})*
 ;
 
 block returns [List<Statement> ast = new ArrayList<Statement>()]:
@@ -90,10 +103,10 @@ block returns [List<Statement> ast = new ArrayList<Statement>()]:
 ;
 
 expression returns [Expression ast]:
-           ID '(' functionParameters')'
+           ID '(' functionArguments')'
                 { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
                                       new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
-                                      $functionParameters.ast);}
+                                      $functionArguments.ast);}
           | start='(' type ')' expression
                 { $ast = new Cast($start.getLine(), $start.getCharPositionInLine()+1,
                                   $type.ast, $expression.ast);}
@@ -148,6 +161,18 @@ type returns [Type ast]:
     | type '[' INT_CONSTANT ']'
         { $ast = new ArrayType($type.getLine(), $type.getCharPositionInLine()+1,
                              $type.ast, LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
+    | recordType
+        { $ast = $recordType.ast;}
+;
+
+recordType returns [RecordType ast]:
+    struct='struct' '{' (recordField {$fields.add($variableDefinition.ast);})* '}' ID ';'
+        { $ast.add(new RecordType($struct.getLine(), $struct.getCharPositionInLine()+1, $fields, $ID.text));}
+;
+
+recordField returns [List<RecordField> ast = new ArrayList<RecordField>()]:
+      type id1=ID { $ast.add(new RecordField($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $id1.text));}
+        (',' id2=ID { $ast.add(new RecordField($type.getLine(), $type.getCharPositionInLine()+1, $type.ast, $id2.text));})* ';'
 ;
 
 WHITE_SPACE: ' '+ -> skip;
