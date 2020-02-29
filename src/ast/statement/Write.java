@@ -8,18 +8,18 @@ import java.util.List;
 
 public class Write extends AbstractASTNode implements Statement {
 
-    private List<Expression> expressions;
+    private Expression expression;
 
-    public Write(int line, int column, List<Expression> expressions) {
+    public Write(int line, int column, Expression expression) {
         super(line, column);
-        setExpressions(expressions);
+        setExpression(expression);
     }
 
-    public List<Expression> getExpressions() {
-        return new ArrayList<>(expressions);
+    public Expression getExpression() {
+        return expression;
     }
 
-    private void setExpressions(List<Expression> expressions) {
-        this.expressions = new ArrayList<>(expressions);
+    private void setExpression(Expression expression) {
+        this.expression = expression;
     }
 }

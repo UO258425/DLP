@@ -8,7 +8,7 @@ public class VariableDefinition extends AbstractASTNode implements Definition {
     private Type type;
     private String name;
 
-    public VariableDefinition(int line, int column) {
+    public VariableDefinition(int line, int column, Type type, String name) {
         super(line, column);
         setName(name);
         setType(type);
