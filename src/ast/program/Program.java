@@ -5,11 +5,17 @@ import ast.AbstractASTNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Program  {
+public class Program  extends AbstractASTNode {
 
     private List<Definition> body;
 
-    public Program(List<Definition> body){
+    public Program(int line, int column){
+        super(line, column);
+        setBody(new ArrayList<Definition>());
+    }
+
+    public Program(int line, int column, List<Definition> body){
+        super(line, column);
         setBody(body);
     }
 

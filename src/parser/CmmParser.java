@@ -1,9 +1,15 @@
 // Generated from C:/Users/Carlos Manrique/IdeaProjects/DLP/src/parser\Cmm.g4 by ANTLR 4.8
 package parser;
 
-    import ast.*;
-    import java.util.*;
-    import parser.*;
+
+import ast.*;
+import ast.expression.*;
+import ast.program.*;
+import ast.statement.*;
+import ast.type.*;
+import java.util.*;
+import parser.*;
+
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -553,7 +559,7 @@ public class CmmParser extends Parser {
 
 	public static class StatementContext extends ParserRuleContext {
 		public List<Statement> ast = new ArrayList<Statement>();
-		public IfElse ifelse = new IfElse();
+		public IfElse ifelse = new IfElse(0,0);
 		public ExpressionContext exp1;
 		public ExpressionContext exp2;
 		public Token w;
@@ -644,9 +650,9 @@ public class CmmParser extends Parser {
 				setState(129);
 				((StatementContext)_localctx).b1 = block();
 				 _localctx.ifelse.setLine(((StatementContext)_localctx).i.getLine());
-				                  _localctx.ifelse.setColumn(((StatementContext)_localctx).i.getCharPositionInLine()+1;
+				                  _localctx.ifelse.setColumn(((StatementContext)_localctx).i.getCharPositionInLine()+1);
 				                  _localctx.ifelse.setCondition(((StatementContext)_localctx).expression.ast);
-				                  _localctx.ifelse.setIfBody(((StatementContext)_localctx).b1.ast));
+				                  _localctx.ifelse.setIfBody(((StatementContext)_localctx).b1.ast);
 				setState(135);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
@@ -746,9 +752,9 @@ public class CmmParser extends Parser {
 				match(T__2);
 				setState(176);
 				match(T__4);
-				 ((StatementContext)_localctx).ast =  new FunctionInvocation(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine()+1,
+				 _localctx.ast.add(new FunctionInvocation(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine()+1,
 				                                                new Variable(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine()+1, (((StatementContext)_localctx).ID!=null?((StatementContext)_localctx).ID.getText():null)),
-				                                                ((StatementContext)_localctx).functionArguments.ast);
+				                                                ((StatementContext)_localctx).functionArguments.ast));
 				}
 				break;
 			}
@@ -1014,7 +1020,7 @@ public class CmmParser extends Parser {
 				setState(225);
 				match(T__2);
 				   ((ExpressionContext)_localctx).expression.ast.setLine(((ExpressionContext)_localctx).op.getLine());
-				                    ((ExpressionContext)_localctx).expression.ast.setColumn(((ExpressionContext)_localctx).op.getColumn());
+				                    ((ExpressionContext)_localctx).expression.ast.setColumn(((ExpressionContext)_localctx).op.getCharPositionInLine()+1);
 				                    _localctx.ast = ((ExpressionContext)_localctx).expression.ast
 				}
 				break;
@@ -1047,7 +1053,7 @@ public class CmmParser extends Parser {
 				{
 				setState(238);
 				((ExpressionContext)_localctx).INT_CONSTANT = match(INT_CONSTANT);
-				 ((ExpressionContext)_localctx).ast =  new IntLiteral(((ExpressionContext)_localctx).INT_CONSTANT.getLine(), ((ExpressionContext)_localctx).INT_CONSTANT.getCharPositionInLine()+1,
+				 ((ExpressionContext)_localctx).ast =  new IntegerLiteral(((ExpressionContext)_localctx).INT_CONSTANT.getLine(), ((ExpressionContext)_localctx).INT_CONSTANT.getCharPositionInLine()+1,
 				                                        LexerHelper.lexemeToInt((((ExpressionContext)_localctx).INT_CONSTANT!=null?((ExpressionContext)_localctx).INT_CONSTANT.getText():null)));
 				}
 				break;
@@ -1388,7 +1394,7 @@ public class CmmParser extends Parser {
 
 	public static class RecordTypeContext extends ParserRuleContext {
 		public RecordType ast;
-		public List<RecordField>() fields = new ArrayList<RecordField>();
+		public List<RecordField> fields = new ArrayList<RecordField>();
 		public Token struct;
 		public RecordFieldContext recordField;
 		public Token ID;

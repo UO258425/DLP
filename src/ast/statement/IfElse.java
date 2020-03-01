@@ -20,6 +20,10 @@ public class IfElse extends AbstractASTNode implements Statement {
         setElseBody(elseBody);
     }
 
+    public IfElse(int line, int column){
+        super(0,0);
+    }
+
     public Expression getCondition() {
         return condition;
     }
@@ -40,7 +44,7 @@ public class IfElse extends AbstractASTNode implements Statement {
         return new ArrayList<>(elseBody);
     }
 
-    private void setElseBody(List<Statement> elseBody) {
+    public void setElseBody(List<Statement> elseBody) {
         this.elseBody = new ArrayList<>(elseBody);
     }
 }

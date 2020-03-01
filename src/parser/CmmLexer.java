@@ -1,9 +1,15 @@
 // Generated from C:/Users/Carlos Manrique/IdeaProjects/DLP/src/parser\Cmm.g4 by ANTLR 4.8
 package parser;
 
-    import ast.*;
-    import java.util.*;
-    import parser.*;
+
+import ast.*;
+import ast.expression.*;
+import ast.program.*;
+import ast.statement.*;
+import ast.type.*;
+import java.util.*;
+import parser.*;
+
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

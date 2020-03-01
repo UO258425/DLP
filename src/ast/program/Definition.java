@@ -1,4 +1,6 @@
 package ast.program;
 
-public interface Definition {
+import ast.ASTNode;
+
+public interface Definition extends ASTNode {
 }

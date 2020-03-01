@@ -1,9 +1,10 @@
 package ast.program;
 
 import ast.AbstractASTNode;
+import ast.statement.Statement;
 import ast.type.Type;
 
-public class VariableDefinition extends AbstractASTNode implements Definition {
+public class VariableDefinition extends AbstractASTNode implements Definition, Statement {
 
     private Type type;
     private String name;

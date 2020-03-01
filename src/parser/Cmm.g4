@@ -1,9 +1,15 @@
 grammar Cmm;
 
 @header{
-    import ast.*;
-    import java.util.*;
-    import parser.*;
+
+import ast.*;
+import ast.expression.*;
+import ast.program.*;
+import ast.statement.*;
+import ast.type.*;
+import java.util.*;
+import parser.*;
+
 }
 
 program returns [Program ast]
@@ -55,7 +61,7 @@ functionBlock returns [List<Statement> ast = new ArrayList<Statement>()]:
 ;
 
 statement returns [List<Statement> ast = new ArrayList<Statement>()]
-          locals [IfElse ifelse = new IfElse()]:
+          locals [IfElse ifelse = new IfElse(0,0)]:
            exp1=expression '=' exp2=expression ';'
                 { $ast.add(new Assignment($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
                                 $exp1.ast, $exp2.ast));}
@@ -66,9 +72,9 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()]
 
          | i='if' '(' expression ')' b1=block
                 { $ifelse.setLine($i.getLine());
-                  $ifelse.setColumn($i.getCharPositionInLine()+1;
+                  $ifelse.setColumn($i.getCharPositionInLine()+1);
                   $ifelse.setCondition($expression.ast);
-                  $ifelse.setIfBody($b1.ast));}
+                  $ifelse.setIfBody($b1.ast);}
 
                 ('else' b2=block { $ifelse.setElseBody($b2.ast);})?
 
@@ -84,9 +90,9 @@ statement returns [List<Statement> ast = new ArrayList<Statement>()]
                 (',' exps2=expression { $ast.add(new Write($write.getLine(), $write.getCharPositionInLine()+1, $exps2.ast)); })* ';'
 
          | ID '(' functionArguments')' ';'
-                 { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
+                 { $ast.add(new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
                                                 new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
-                                                $functionArguments.ast);}
+                                                $functionArguments.ast));}
 ;
 
 functionArguments returns[List<Expression> ast = new ArrayList<Expression>()]:
@@ -111,7 +117,7 @@ expression returns [Expression ast]:
                                   $type.ast, $expression.ast);}
           | op='(' expression ')'
                 {   $expression.ast.setLine($op.getLine());
-                    $expression.ast.setColumn($op.getColumn());
+                    $expression.ast.setColumn($op.getCharPositionInLine()+1);
                     $ast = $expression.ast}
           | var=expression '[' index=expression ']'
                 { $ast = new ArrayIndexing($var.start.getLine(), $var.start.getCharPositionInLine()+1,
@@ -138,7 +144,7 @@ expression returns [Expression ast]:
           | ID
                 { $ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}
           | INT_CONSTANT
-                { $ast = new IntLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1,
+                { $ast = new IntegerLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1,
                                         LexerHelper.lexemeToInt($INT_CONSTANT.text));}
           | CHAR_CONSTANT
                 { $ast = new CharacterLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1,
@@ -171,7 +177,7 @@ voidType returns [VoidType ast]:
 
 
 recordType returns [RecordType ast]
-           locals [List<RecordField>() fields = new ArrayList<RecordField>()]:
+           locals [List<RecordField> fields = new ArrayList<RecordField>()]:
     struct='struct' '{' (recordField {$fields.addAll($recordField.ast);})* '}' ID ';'
         { $ast = new RecordType($struct.getLine(), $struct.getCharPositionInLine()+1, $fields, $ID.text);}
 ;
