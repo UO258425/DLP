@@ -22,7 +22,7 @@ public class FunctionInvocation extends AbstractASTNode implements Statement, Ex
         return function;
     }
 
-    private void setFunction(Variable function) {
+    public void setFunction(Variable function) {
         this.function = function;
     }
 
@@ -30,7 +30,7 @@ public class FunctionInvocation extends AbstractASTNode implements Statement, Ex
         return new ArrayList<>(parameters);
     }
 
-    private void setParameters(List<Expression> parameters) {
+    public void setParameters(List<Expression> parameters) {
         this.parameters = new ArrayList<>(parameters);
     }
 }

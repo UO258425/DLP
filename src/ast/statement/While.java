@@ -21,7 +21,7 @@ public class While extends AbstractASTNode implements Statement {
         return condition;
     }
 
-    private void setCondition(Expression condition) {
+    public void setCondition(Expression condition) {
         this.condition = condition;
     }
 
@@ -29,7 +29,7 @@ public class While extends AbstractASTNode implements Statement {
         return new ArrayList<>(body);
     }
 
-    private void setBody(List<Statement> body) {
+    public void setBody(List<Statement> body) {
         this.body = new ArrayList<>(body);
     }
 }

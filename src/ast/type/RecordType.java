@@ -21,7 +21,7 @@ public class RecordType extends AbstractASTNode implements Type{
         return new ArrayList<RecordField>(fields);
     }
 
-    private void setFields(List<RecordField> fields) {
+    public void setFields(List<RecordField> fields) {
         this.fields = new ArrayList<RecordField>(fields);
     }
 }

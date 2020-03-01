@@ -17,7 +17,7 @@ public class ArrayType extends AbstractASTNode implements Type{
         return type;
     }
 
-    private void setType(Type type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -25,7 +25,7 @@ public class ArrayType extends AbstractASTNode implements Type{
         return size;
     }
 
-    private void setSize(int size) {
+    public void setSize(int size) {
         this.size = size;
     }
 }

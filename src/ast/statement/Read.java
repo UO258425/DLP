@@ -19,7 +19,7 @@ public class Read extends AbstractASTNode implements Statement {
         return expression;
     }
 
-    private void setExpression(Expression expression) {
+    public void setExpression(Expression expression) {
         this.expression =expression;
     }
 }

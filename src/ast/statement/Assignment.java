@@ -19,7 +19,7 @@ public class Assignment extends AbstractASTNode implements Statement {
         return left;
     }
 
-    private void setLeft(Expression left) {
+    public void setLeft(Expression left) {
         this.left = left;
     }
 
@@ -27,7 +27,7 @@ public class Assignment extends AbstractASTNode implements Statement {
         return right;
     }
 
-    private void setRight(Expression right) {
+    public void setRight(Expression right) {
         this.right = right;
     }
 }

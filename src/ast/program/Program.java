@@ -17,7 +17,7 @@ public class Program  {
         return body;
     }
 
-    private void setBody(List<Definition> body) {
+    public void setBody(List<Definition> body) {
         this.body = new ArrayList<>(body);
     }
 }

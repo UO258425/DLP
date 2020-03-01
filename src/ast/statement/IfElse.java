@@ -24,7 +24,7 @@ public class IfElse extends AbstractASTNode implements Statement {
         return condition;
     }
 
-    private void setCondition(Expression condition) {
+    public void setCondition(Expression condition) {
         this.condition = condition;
     }
 
@@ -32,7 +32,7 @@ public class IfElse extends AbstractASTNode implements Statement {
         return new ArrayList<>(ifBody);
     }
 
-    private void setIfBody(List<Statement> ifBody) {
+    public void setIfBody(List<Statement> ifBody) {
         this.ifBody = new ArrayList<>(ifBody);
     }
 

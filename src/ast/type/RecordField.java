@@ -17,7 +17,7 @@ public class RecordField extends AbstractASTNode {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -25,7 +25,7 @@ public class RecordField extends AbstractASTNode {
         return type;
     }
 
-    private void setType(Type type) {
+    public void setType(Type type) {
         this.type = type;
     }
 }
