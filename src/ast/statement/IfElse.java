@@ -10,8 +10,8 @@ import java.util.List;
 public class IfElse extends AbstractASTNode implements Statement {
 
     private Expression condition;
-    private List<Statement> ifBody;
-    private List<Statement> elseBody;
+    private List<Statement> ifBody = new ArrayList<>();
+    private List<Statement> elseBody = new ArrayList<>();
 
     public IfElse(int line, int column, Expression condition, List<Statement> ifBody, List<Statement> elseBody) {
         super(line, column);

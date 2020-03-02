@@ -35,7 +35,7 @@ mainFunction returns [Definition ast]:
 ;
 
 
-variableDefinition returns [List<Definition> ast = new ArrayList<Definition>()]:
+variableDefinition returns [List<VariableDefinition> ast = new ArrayList<VariableDefinition>()]:
       type id1=ID { $ast.add(new VariableDefinition($type.start.getLine(), $type.start.getCharPositionInLine()+1, $type.ast, $id1.text));}
         (',' id2=ID { $ast.add(new VariableDefinition($type.start.getLine(), $type.start.getCharPositionInLine()+1, $type.ast, $id2.text));})* ';'
 ;
@@ -49,8 +49,8 @@ functionDefinition returns [Definition ast]:
 ;
 
 functionParameters returns[List<VariableDefinition> ast = new ArrayList<VariableDefinition>()]:
-   | type id1=ID { $ast.add(new VariableDefinition($type.start.getLine(), $type.start.getCharPositionInLine()+1, $type.ast, $id1.text));}
-     (',' id2=ID { $ast.add(new VariableDefinition($type.start.getLine(), $type.start.getCharPositionInLine()+1, $type.ast, $id2.text));})*
+   | t1=type id1=ID { $ast.add(new VariableDefinition($t1.start.getLine(), $t1.start.getCharPositionInLine()+1, $t1.ast, $id1.text));}
+     (',' t2=type id2=ID { $ast.add(new VariableDefinition($t2.start.getLine(), $t2.start.getCharPositionInLine()+1, $t2.ast, $id2.text));})*
 ;
 
 functionBlock returns [List<Statement> ast = new ArrayList<Statement>()]:
@@ -108,23 +108,21 @@ block returns [List<Statement> ast = new ArrayList<Statement>()]:
 ;
 
 expression returns [Expression ast]:
-           ID '(' functionArguments')'
+           p='(' type ')' expression
+                { $ast = new Cast($p.getLine(), $p.getCharPositionInLine()+1,
+                                  $type.ast, $expression.ast);}
+           | ID '(' functionArguments')'
                 { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
                                       new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
                                       $functionArguments.ast);}
-          | start='(' type ')' expression
-                { $ast = new Cast($start.getLine(), $start.getCharPositionInLine()+1,
-                                  $type.ast, $expression.ast);}
           | op='(' expression ')'
                 {   $expression.ast.setLine($op.getLine());
                     $expression.ast.setColumn($op.getCharPositionInLine()+1);
-                    $ast = $expression.ast}
+                    $ast = $expression.ast;}
           | var=expression '[' index=expression ']'
                 { $ast = new ArrayIndexing($var.start.getLine(), $var.start.getCharPositionInLine()+1,
                                            $var.ast, $index.ast);}
-          | expression '.' ID
-                { $ast = new FieldAccess($expression.start.getLine(), $expression.start.getCharPositionInLine()+1,
-                                         $expression.ast, $ID.text);}
+
           | op='-' expression
                 { $ast = new UnaryMinus($op.getLine(), $op.getCharPositionInLine()+1, $expression.ast);}
           | exp1=expression op=('*'|'/'|'%') exp2=expression
@@ -141,6 +139,9 @@ expression returns [Expression ast]:
                                         $op.text, $exp1.ast, $exp2.ast);}
           | op='!' expression
                 { $ast = new UnaryNot($op.getLine(), $op.getCharPositionInLine()+1, $expression.ast);}
+          | exp=expression '.' ID
+                { $ast = new FieldAccess($exp.start.getLine(), $exp.start.getCharPositionInLine()+1,
+                                          $exp.ast, $ID.text);}
           | ID
                 { $ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}
           | INT_CONSTANT
@@ -176,10 +177,10 @@ voidType returns [VoidType ast]:
 ;
 
 
-recordType returns [RecordType ast]
+recordType returns [Type ast]
            locals [List<RecordField> fields = new ArrayList<RecordField>()]:
-    struct='struct' '{' (recordField {$fields.addAll($recordField.ast);})* '}' ID ';'
-        { $ast = new RecordType($struct.getLine(), $struct.getCharPositionInLine()+1, $fields, $ID.text);}
+    struct='struct' '{' (recordField {$fields.addAll($recordField.ast);})* '}'
+        { $ast = new RecordType($struct.getLine(), $struct.getCharPositionInLine()+1, $fields);}
 ;
 
 recordField returns [List<RecordField> ast = new ArrayList<RecordField>()]:

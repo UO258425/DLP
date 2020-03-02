@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Program  extends AbstractASTNode {
 
-    private List<Definition> body;
+    private List<Definition> body = new ArrayList<>();
 
     public Program(int line, int column){
         super(line, column);

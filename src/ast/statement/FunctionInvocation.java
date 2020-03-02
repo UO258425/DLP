@@ -10,7 +10,7 @@ import java.util.List;
 public class FunctionInvocation extends AbstractASTNode implements Statement, Expression {
 
     private Variable function;
-    private List<Expression> parameters;
+    private List<Expression> parameters = new ArrayList<>();
 
     public FunctionInvocation(int line, int column, Variable function, List<Expression> parameters) {
         super(line, column);

@@ -11,7 +11,7 @@ public class FunctionDefinition extends AbstractASTNode implements Definition {
 
     private Type type;
     private String name;
-    private List<Statement> statements;
+    private List<Statement> statements = new ArrayList<>();
 
     public FunctionDefinition(int line, int column, List<Statement> statements, Type type, String name) {
         super(line, column);

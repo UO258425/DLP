@@ -7,13 +7,11 @@ import java.util.List;
 
 public class RecordType extends AbstractASTNode implements Type{
 
-    private List<RecordField> fields;
-    private String variable;
+    private List<RecordField> fields = new ArrayList<>();
 
-    public RecordType(int line, int column, List<RecordField> fields, String variable) {
+    public RecordType(int line, int column, List<RecordField> fields) {
         super(line, column);
         setFields(fields);
-        this.variable = variable;
 
     }
 

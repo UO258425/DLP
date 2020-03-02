@@ -9,7 +9,7 @@ import java.util.List;
 public class While extends AbstractASTNode implements Statement {
 
     private Expression condition;
-    private List<Statement> body;
+    private List<Statement> body = new ArrayList<>();
 
     public While(int line, int column, Expression condition, List<Statement> body) {
         super(line, column);
