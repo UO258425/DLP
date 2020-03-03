@@ -18,4 +18,11 @@ public class IntegerLiteral extends AbstractASTNode implements Expression {
     private void setValue(int value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "IntegerLiteral{" +
+                "value=" + value +
+                '}';
+    }
 }

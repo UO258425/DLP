@@ -22,4 +22,11 @@ public class Write extends AbstractASTNode implements Statement {
     public void setExpression(Expression expression) {
         this.expression = expression;
     }
+
+    @Override
+    public String toString() {
+        return "Write{" +
+                "expression=" + expression +
+                '}';
+    }
 }

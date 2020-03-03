@@ -32,4 +32,12 @@ public class While extends AbstractASTNode implements Statement {
     public void setBody(List<Statement> body) {
         this.body = new ArrayList<>(body);
     }
+
+    @Override
+    public String toString() {
+        return "While{" +
+                "condition=" + condition +
+                ", body=" + body +
+                '}';
+    }
 }

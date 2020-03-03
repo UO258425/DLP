@@ -7,4 +7,9 @@ public class IntegerType extends AbstractASTNode implements Type {
     public IntegerType(int line, int column) {
         super(line, column);
     }
+
+    @Override
+    public String toString() {
+        return "IntegerType{}";
+    }
 }

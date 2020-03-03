@@ -26,4 +26,11 @@ public class Program  extends AbstractASTNode {
     public void setBody(List<Definition> body) {
         this.body = new ArrayList<>(body);
     }
+
+    @Override
+    public String toString() {
+        return "Program{" +
+                "body=" + body +
+                '}';
+    }
 }

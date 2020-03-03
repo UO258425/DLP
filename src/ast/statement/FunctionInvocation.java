@@ -33,4 +33,12 @@ public class FunctionInvocation extends AbstractASTNode implements Statement, Ex
     public void setParameters(List<Expression> parameters) {
         this.parameters = new ArrayList<>(parameters);
     }
+
+    @Override
+    public String toString() {
+        return "FunctionInvocation{" +
+                "function=" + function +
+                ", parameters=" + parameters +
+                '}';
+    }
 }

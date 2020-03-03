@@ -60,6 +60,55 @@ functionBlock returns [List<Statement> ast = new ArrayList<Statement>()]:
     '}'
 ;
 
+expression returns [Expression ast]:
+           p='(' type ')' expression
+                { $ast = new Cast($p.getLine(), $p.getCharPositionInLine()+1,
+                                  $type.ast, $expression.ast);}
+           | ID '(' functionArguments')'
+                { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
+                                      new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
+                                      $functionArguments.ast);}
+          | op='(' expression ')'
+                {   $expression.ast.setLine($op.getLine());
+                    $expression.ast.setColumn($op.getCharPositionInLine()+1);
+                    $ast = $expression.ast;}
+          | var=expression '[' index=expression ']'
+                { $ast = new ArrayIndexing($var.start.getLine(), $var.start.getCharPositionInLine()+1,
+                                           $var.ast, $index.ast);}
+          | exp=expression '.' ID
+                { $ast = new FieldAccess($exp.start.getLine(), $exp.start.getCharPositionInLine()+1,
+                                          $exp.ast, $ID.text);}
+          | op='-' expression
+                { $ast = new UnaryMinus($op.getLine(), $op.getCharPositionInLine()+1, $expression.ast);}
+          | exp1=expression op=('*'|'/'|'%') exp2=expression
+                { $ast = new ArithmeticExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
+                                                  $op.text, $exp1.ast, $exp2.ast);}
+          | exp1=expression op=('+'|'-') exp2=expression
+                { $ast = new ArithmeticExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
+                                                  $op.text, $exp1.ast, $exp2.ast);}
+          | exp1=expression op=('>'|'>='|'<'|'<='|'!='|'==') exp2=expression
+                { $ast = new LogicalExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
+                                               $op.text, $exp1.ast, $exp2.ast);}
+          | exp1=expression op=('&&'|'||') exp2=expression
+                { $ast = new LogicalExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
+                                        $op.text, $exp1.ast, $exp2.ast);}
+          | op='!' expression
+                { $ast = new UnaryNot($op.getLine(), $op.getCharPositionInLine()+1, $expression.ast);}
+
+          | ID
+                { $ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}
+          | INT_CONSTANT
+                { $ast = new IntegerLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1,
+                                        LexerHelper.lexemeToInt($INT_CONSTANT.text));}
+          | CHAR_CONSTANT
+                { $ast = new CharacterLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1,
+                                        LexerHelper.lexemeToChar($CHAR_CONSTANT.text));}
+          | REAL_CONSTANT
+                { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1,
+                                                        LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
+;
+
+
 statement returns [List<Statement> ast = new ArrayList<Statement>()]
           locals [IfElse ifelse = new IfElse(0,0)]:
            exp1=expression '=' exp2=expression ';'
@@ -107,54 +156,6 @@ block returns [List<Statement> ast = new ArrayList<Statement>()]:
      | '{' (statement {$ast.addAll($statement.ast);})+ '}'
 ;
 
-expression returns [Expression ast]:
-           p='(' type ')' expression
-                { $ast = new Cast($p.getLine(), $p.getCharPositionInLine()+1,
-                                  $type.ast, $expression.ast);}
-           | ID '(' functionArguments')'
-                { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1,
-                                      new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text),
-                                      $functionArguments.ast);}
-          | op='(' expression ')'
-                {   $expression.ast.setLine($op.getLine());
-                    $expression.ast.setColumn($op.getCharPositionInLine()+1);
-                    $ast = $expression.ast;}
-          | var=expression '[' index=expression ']'
-                { $ast = new ArrayIndexing($var.start.getLine(), $var.start.getCharPositionInLine()+1,
-                                           $var.ast, $index.ast);}
-
-          | op='-' expression
-                { $ast = new UnaryMinus($op.getLine(), $op.getCharPositionInLine()+1, $expression.ast);}
-          | exp1=expression op=('*'|'/'|'%') exp2=expression
-                { $ast = new ArithmeticExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
-                                                  $op.text, $exp1.ast, $exp2.ast);}
-          | exp1=expression op=('+'|'-') exp2=expression
-                { $ast = new ArithmeticExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
-                                                  $op.text, $exp1.ast, $exp2.ast);}
-          | exp1=expression op=('>'|'>='|'<'|'<='|'!='|'==') exp2=expression
-                { $ast = new LogicalExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
-                                               $op.text, $exp1.ast, $exp2.ast);}
-          | exp1=expression op=('&&'|'||') exp2=expression
-                { $ast = new LogicalExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
-                                        $op.text, $exp1.ast, $exp2.ast);}
-          | op='!' expression
-                { $ast = new UnaryNot($op.getLine(), $op.getCharPositionInLine()+1, $expression.ast);}
-          | exp=expression '.' ID
-                { $ast = new FieldAccess($exp.start.getLine(), $exp.start.getCharPositionInLine()+1,
-                                          $exp.ast, $ID.text);}
-          | ID
-                { $ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text);}
-          | INT_CONSTANT
-                { $ast = new IntegerLiteral($INT_CONSTANT.getLine(), $INT_CONSTANT.getCharPositionInLine()+1,
-                                        LexerHelper.lexemeToInt($INT_CONSTANT.text));}
-          | CHAR_CONSTANT
-                { $ast = new CharacterLiteral($CHAR_CONSTANT.getLine(), $CHAR_CONSTANT.getCharPositionInLine()+1,
-                                        LexerHelper.lexemeToChar($CHAR_CONSTANT.text));}
-          | REAL_CONSTANT
-                { $ast = new DoubleLiteral($REAL_CONSTANT.getLine(), $REAL_CONSTANT.getCharPositionInLine()+1,
-                                                        LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
-;
-
 type returns [Type ast]:
       t='int'
         { $ast = new IntegerType($t.getLine(), $t.getCharPositionInLine()+1);}
@@ -163,7 +164,7 @@ type returns [Type ast]:
     | t='double'
         { $ast = new DoubleType($t.getLine(), $t.getCharPositionInLine()+1);}
     | at=type '[' INT_CONSTANT ']'
-        { $ast = new ArrayType($at.start.getLine(), $at.start.getCharPositionInLine()+1,
+        { $ast = ArrayType.createArray($at.start.getLine(), $at.start.getCharPositionInLine()+1,
                              $at.ast, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
     | recordType
         { $ast = $recordType.ast;}

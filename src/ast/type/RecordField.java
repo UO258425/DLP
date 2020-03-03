@@ -28,4 +28,12 @@ public class RecordField extends AbstractASTNode {
     public void setType(Type type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "RecordField{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

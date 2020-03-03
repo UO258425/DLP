@@ -18,4 +18,11 @@ public class Variable extends AbstractASTNode implements Expression {
     private void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Variable{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

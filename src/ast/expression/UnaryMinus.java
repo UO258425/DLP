@@ -18,4 +18,11 @@ public class UnaryMinus extends AbstractASTNode implements  Expression {
     private void setExpression(Expression expression) {
         this.expression = expression;
     }
+
+    @Override
+    public String toString() {
+        return "UnaryMinus{" +
+                "expression=" + expression +
+                '}';
+    }
 }

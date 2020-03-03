@@ -30,4 +30,12 @@ public class VariableDefinition extends AbstractASTNode implements Definition, S
     private void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "VariableDefinition{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

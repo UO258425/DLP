@@ -18,4 +18,11 @@ public class CharacterLiteral extends AbstractASTNode implements Expression{
     private void setValue(char value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "CharacterLiteral{" +
+                "value=" + value +
+                '}';
+    }
 }

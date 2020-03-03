@@ -43,4 +43,13 @@ public class FunctionDefinition extends AbstractASTNode implements Definition {
     public void setStatements(List<Statement> statements) {
         this.statements = new ArrayList<>(statements);
     }
+
+    @Override
+    public String toString() {
+        return "FunctionDefinition{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", statements=" + statements +
+                '}';
+    }
 }

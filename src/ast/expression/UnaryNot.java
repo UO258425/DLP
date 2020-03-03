@@ -20,4 +20,10 @@ public class UnaryNot extends AbstractASTNode implements Expression {
         this.expression = expression;
     }
 
+    @Override
+    public String toString() {
+        return "UnaryNot{" +
+                "expression=" + expression +
+                '}';
+    }
 }

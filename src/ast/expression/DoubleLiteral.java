@@ -18,4 +18,11 @@ public class DoubleLiteral extends AbstractASTNode implements Expression {
     private void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "DoubleLiteral{" +
+                "value=" + value +
+                '}';
+    }
 }

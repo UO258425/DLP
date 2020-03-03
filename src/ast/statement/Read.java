@@ -22,4 +22,11 @@ public class Read extends AbstractASTNode implements Statement {
     public void setExpression(Expression expression) {
         this.expression =expression;
     }
+
+    @Override
+    public String toString() {
+        return "Read{" +
+                "expression=" + expression +
+                '}';
+    }
 }

@@ -38,4 +38,13 @@ public class LogicalExpression extends AbstractASTNode implements Expression{
     private void setRight(Expression right) {
         this.right = right;
     }
+
+    @Override
+    public String toString() {
+        return "LogicalExpression{" +
+                "operation='" + operation + '\'' +
+                ", left=" + left +
+                ", right=" + right +
+                '}';
+    }
 }

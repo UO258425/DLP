@@ -29,4 +29,12 @@ public class ArrayIndexing extends AbstractASTNode implements Expression {
     private void setIndex(Expression index) {
         this.index = index;
     }
+
+    @Override
+    public String toString() {
+        return "ArrayIndexing{" +
+                "variable=" + variable +
+                ", index=" + index +
+                '}';
+    }
 }

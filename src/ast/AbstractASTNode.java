@@ -8,6 +8,7 @@ public abstract class AbstractASTNode implements ASTNode {
     public AbstractASTNode(int line, int column){
         setLine(line);
         setColumn(column);
+
     }
 
     @Override

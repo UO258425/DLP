@@ -39,4 +39,12 @@ public class FunctionType extends AbstractASTNode implements Type {
     private void setParameters(List<VariableDefinition> parameters) {
         this.parameters = new ArrayList<>(parameters);
     }
+
+    @Override
+    public String toString() {
+        return "FunctionType{" +
+                "returnType=" + returnType +
+                ", parameters=" + parameters +
+                '}';
+    }
 }

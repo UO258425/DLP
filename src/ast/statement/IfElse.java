@@ -47,4 +47,13 @@ public class IfElse extends AbstractASTNode implements Statement {
     public void setElseBody(List<Statement> elseBody) {
         this.elseBody = new ArrayList<>(elseBody);
     }
+
+    @Override
+    public String toString() {
+        return "IfElse{" +
+                "condition=" + condition +
+                ", ifBody=" + ifBody +
+                ", elseBody=" + elseBody +
+                '}';
+    }
 }

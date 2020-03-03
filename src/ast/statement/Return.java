@@ -19,4 +19,11 @@ public class Return extends AbstractASTNode implements Statement {
     private void setReturned(Expression returned) {
         this.returned = returned;
     }
+
+    @Override
+    public String toString() {
+        return "Return{" +
+                "returned=" + returned +
+                '}';
+    }
 }
