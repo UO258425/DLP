@@ -4,6 +4,7 @@ public abstract class AbstractASTNode implements ASTNode {
 
     private int line;
     private int column;
+    private boolean lvalue;
 
     public AbstractASTNode(int line, int column){
         setLine(line);
@@ -29,5 +30,13 @@ public abstract class AbstractASTNode implements ASTNode {
     @Override
     public void setColumn(int column) {
         this.column = column;
+    }
+
+    public boolean isLvalue() {
+        return lvalue;
+    }
+
+    public void setLvalue(boolean lvalue) {
+        this.lvalue = lvalue;
     }
 }

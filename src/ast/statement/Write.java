@@ -2,11 +2,12 @@ package ast.statement;
 
 import ast.AbstractASTNode;
 import ast.expression.Expression;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Write extends AbstractASTNode implements Statement {
+public class Write extends AbstractStatement {
 
     private Expression expression;
 
@@ -28,5 +29,9 @@ public class Write extends AbstractASTNode implements Statement {
         return "Write{" +
                 "expression=" + expression +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

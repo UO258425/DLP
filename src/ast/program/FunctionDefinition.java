@@ -3,11 +3,12 @@ package ast.program;
 import ast.AbstractASTNode;
 import ast.statement.Statement;
 import ast.type.Type;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionDefinition extends AbstractASTNode implements Definition {
+public class FunctionDefinition extends AbstractDefinition {
 
     private Type type;
     private String name;
@@ -51,5 +52,9 @@ public class FunctionDefinition extends AbstractASTNode implements Definition {
                 ", name='" + name + '\'' +
                 ", statements=" + statements +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

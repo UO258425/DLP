@@ -3,11 +3,12 @@ package ast.statement;
 import ast.AbstractASTNode;
 import ast.expression.Expression;
 import ast.expression.Variable;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionInvocation extends AbstractASTNode implements Statement, Expression {
+public class FunctionInvocation extends AbstractStatement implements Expression {
 
     private Variable function;
     private List<Expression> parameters = new ArrayList<>();
@@ -40,5 +41,9 @@ public class FunctionInvocation extends AbstractASTNode implements Statement, Ex
                 "function=" + function +
                 ", parameters=" + parameters +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

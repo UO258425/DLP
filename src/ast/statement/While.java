@@ -2,11 +2,12 @@ package ast.statement;
 
 import ast.AbstractASTNode;
 import ast.expression.Expression;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class While extends AbstractASTNode implements Statement {
+public class While extends AbstractStatement {
 
     private Expression condition;
     private List<Statement> body = new ArrayList<>();
@@ -39,5 +40,9 @@ public class While extends AbstractASTNode implements Statement {
                 "condition=" + condition +
                 ", body=" + body +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

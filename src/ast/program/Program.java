@@ -1,6 +1,7 @@
 package ast.program;
 
 import ast.AbstractASTNode;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,5 +33,9 @@ public class Program  extends AbstractASTNode {
         return "Program{" +
                 "body=" + body +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

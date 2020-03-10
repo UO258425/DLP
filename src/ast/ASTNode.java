@@ -1,5 +1,7 @@
 package ast;
 
+import visitor.Visitor;
+
 public interface ASTNode {
 
     int getLine();
@@ -9,5 +11,7 @@ public interface ASTNode {
     void setLine(int line);
 
     void setColumn(int column);
+
+    <TP,TR> TR accept(Visitor<TP,TR> visitor, TP param);
 
 }

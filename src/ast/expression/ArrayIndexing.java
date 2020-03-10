@@ -1,8 +1,9 @@
 package ast.expression;
 
 import ast.AbstractASTNode;
+import visitor.Visitor;
 
-public class ArrayIndexing extends AbstractASTNode implements Expression {
+public class ArrayIndexing extends AbstractExpression {
 
     private Expression variable;
     private Expression index;
@@ -36,5 +37,9 @@ public class ArrayIndexing extends AbstractASTNode implements Expression {
                 "variable=" + variable +
                 ", index=" + index +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

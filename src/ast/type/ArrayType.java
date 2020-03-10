@@ -1,10 +1,11 @@
 package ast.type;
 
 import ast.AbstractASTNode;
+import visitor.Visitor;
 
 import java.lang.reflect.Array;
 
-public class ArrayType extends AbstractASTNode implements Type{
+public class ArrayType extends AbstractType{
 
     private Type type;
     private int size;
@@ -46,5 +47,10 @@ public class ArrayType extends AbstractASTNode implements Type{
                 "type=" + type +
                 ", size=" + size +
                 '}';
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

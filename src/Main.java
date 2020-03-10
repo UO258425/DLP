@@ -5,6 +5,7 @@ import introspector.view.IntrospectorTree;
 import parser.*;
 
 import org.antlr.v4.runtime.*;
+import semantic.TypeCheckingVisitor;
 
 public class Main {
 	
@@ -26,9 +27,12 @@ public class Main {
 		IntrospectorModel model = new IntrospectorModel("Program", ast);
 		new IntrospectorTree("Program", model);
 
-		if(ErrorHandler.getInstance().anyError()){
+		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
+		typeCheckingVisitor.visit(ast, null);
+
+		if(ErrorHandler.getInstance().anyError())
 			ErrorHandler.getInstance().showErrors(System.err);
-		}
+
 	}
 
 

@@ -1,6 +1,7 @@
 package ast.expression;
 
 import ast.AbstractASTNode;
+import visitor.Visitor;
 
 public class IntegerLiteral extends AbstractASTNode implements Expression {
 
@@ -24,5 +25,10 @@ public class IntegerLiteral extends AbstractASTNode implements Expression {
         return "IntegerLiteral{" +
                 "value=" + value +
                 '}';
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

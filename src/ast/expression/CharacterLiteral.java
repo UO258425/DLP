@@ -1,8 +1,9 @@
 package ast.expression;
 
 import ast.AbstractASTNode;
+import visitor.Visitor;
 
-public class CharacterLiteral extends AbstractASTNode implements Expression{
+public class CharacterLiteral extends AbstractExpression{
 
     private char value;
 
@@ -24,5 +25,9 @@ public class CharacterLiteral extends AbstractASTNode implements Expression{
         return "CharacterLiteral{" +
                 "value=" + value +
                 '}';
+    }
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }
