@@ -204,7 +204,7 @@ ID: (LETTER|'_')(LETTER|'_'|DIGIT)*;
 INT_CONSTANT: '0' | [1-9][0-9]*;
 
 CHAR_CONSTANT: '\'' (LETTER|INT_CONSTANT) '\''
-             | '\'' ('.'|'-'|'~') '\''
+             | '\'' ([ -~]) '\''
              | '\'' '\\'('n'|'t'|INT_CONSTANT+) '\''
 ;
 

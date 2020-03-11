@@ -7,9 +7,6 @@ import ast.program.VariableDefinition;
 import ast.statement.*;
 import ast.type.*;
 
-import java.lang.reflect.Array;
-import java.util.function.Function;
-
 public interface Visitor<TP,TR>{
     TR visit(Program program,  TP param);
     TR visit(VariableDefinition variableDefinition, TP param);

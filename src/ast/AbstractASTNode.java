@@ -32,10 +32,12 @@ public abstract class AbstractASTNode implements ASTNode {
         this.column = column;
     }
 
+    @Override
     public boolean isLvalue() {
         return lvalue;
     }
 
+    @Override
     public void setLvalue(boolean lvalue) {
         this.lvalue = lvalue;
     }

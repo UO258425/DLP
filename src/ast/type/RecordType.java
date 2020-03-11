@@ -1,13 +1,9 @@
 package ast.type;
 
-import ast.AbstractASTNode;
-import error.ErrorHandler;
 import visitor.Visitor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RecordType extends AbstractType {
 

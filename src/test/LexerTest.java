@@ -1,8 +1,10 @@
 package test;
 
-import parser.*;
-
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.Token;
+import parser.CmmLexer;
+import parser.LexerHelper;
 
 public class LexerTest {
 

@@ -12,6 +12,10 @@ public interface ASTNode {
 
     void setColumn(int column);
 
+    boolean isLvalue();
+
+    void setLvalue(boolean lvalue);
+
     <TP,TR> TR accept(Visitor<TP,TR> visitor, TP param);
 
 }

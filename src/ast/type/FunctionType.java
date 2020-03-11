@@ -1,6 +1,5 @@
 package ast.type;
 
-import ast.AbstractASTNode;
 import ast.program.VariableDefinition;
 import visitor.Visitor;
 

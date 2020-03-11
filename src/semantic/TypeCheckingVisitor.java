@@ -35,8 +35,11 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(Assignment assignment, Void param) {
         assignment.getLeft().accept(this, null);
+        if(!assignment.getLeft().isLvalue())
+            new ErrorType(assignment.getLine(), assignment.getColumn(),"lvalue expected");
         assignment.getRight().accept(this, null);
         assignment.setLvalue(false);
+
         return null;
     }
 
@@ -60,6 +63,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(Read read, Void param) {
         read.getExpression().accept(this, null);
+        if(!read.getExpression().isLvalue())
+            new ErrorType(read.getExpression().getLine(), read.getExpression().getColumn(),"lvalue expected");
         read.setLvalue(false);
         return null;
     }

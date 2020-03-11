@@ -1,6 +1,5 @@
 package ast.type;
 
-import ast.AbstractASTNode;
 import error.ErrorHandler;
 import visitor.Visitor;
 
@@ -14,6 +13,8 @@ public class ErrorType extends AbstractType {
         ErrorHandler.getInstance().addError(this);
 
     }
+
+
 
     public String getMessage() {
         return message;

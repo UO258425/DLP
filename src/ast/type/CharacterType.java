@@ -1,6 +1,5 @@
 package ast.type;
 
-import ast.AbstractASTNode;
 import visitor.Visitor;
 
 public class CharacterType extends AbstractType{

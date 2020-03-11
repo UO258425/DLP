@@ -1,6 +1,5 @@
 package ast.program;
 
-import ast.AbstractASTNode;
 import ast.statement.Statement;
 import ast.type.Type;
 import visitor.Visitor;

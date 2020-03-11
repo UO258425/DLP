@@ -2,9 +2,11 @@ import ast.program.Program;
 import error.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
-import parser.*;
-
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import parser.CmmLexer;
+import parser.CmmParser;
 import semantic.TypeCheckingVisitor;
 
 public class Main {
@@ -24,14 +26,16 @@ public class Main {
 		CmmParser parser = new CmmParser(tokens);	
 		Program ast = parser.program().ast;
 
-		IntrospectorModel model = new IntrospectorModel("Program", ast);
-		new IntrospectorTree("Program", model);
+
 
 		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
 		typeCheckingVisitor.visit(ast, null);
 
 		if(ErrorHandler.getInstance().anyError())
 			ErrorHandler.getInstance().showErrors(System.err);
+
+		IntrospectorModel model = new IntrospectorModel("Program", ast);
+		new IntrospectorTree("Program", model);
 
 	}
 
