@@ -9,31 +9,11 @@ import java.util.List;
 
 public class FunctionDefinition extends AbstractDefinition {
 
-    private Type type;
-    private String name;
     private List<Statement> statements = new ArrayList<>();
 
     public FunctionDefinition(int line, int column, List<Statement> statements, Type type, String name) {
-        super(line, column);
+        super(line, column, name, type);
         setStatements(statements);
-        setType(type);
-        setName(name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     public List<Statement> getStatements() {
