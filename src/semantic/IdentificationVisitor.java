@@ -26,8 +26,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
         super.visit(variable, param);
         variable.setDefinition(symbolTable.find(variable.getName()));
         if(variable.getDefinition() == null)
-            ErrorHandler.getInstance().addError(new ErrorType(variable.getLine(), variable.getColumn(),
-                    "Variable "+variable.getName()+" is not defined in the scope"));
+            new ErrorType(variable.getLine(), variable.getColumn(),"Variable "+variable.getName()+" is not defined in the scope");
         return null;
     }
 
@@ -35,16 +34,14 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
     public Void visit(VariableDefinition variableDefinition, Void param) {
         super.visit(variableDefinition, param);
         if(!symbolTable.insert(variableDefinition))
-            ErrorHandler.getInstance().addError(new ErrorType(variableDefinition.getLine(), variableDefinition.getColumn(),
-                    "Variable "+variableDefinition.getName()+" is already defined in the scope."));
+            new ErrorType(variableDefinition.getLine(), variableDefinition.getColumn(),"Variable "+variableDefinition.getName()+" is already defined in the scope.");
         return null;
     }
 
     @Override
     public Void visit(FunctionDefinition functionDefinition, Void param) {
         if(!symbolTable.insert(functionDefinition))
-            ErrorHandler.getInstance().addError(new ErrorType(functionDefinition.getLine(), functionDefinition.getColumn(),
-                    "Function "+functionDefinition.getName()+" is already defined in the scope."));
+           new ErrorType(functionDefinition.getLine(), functionDefinition.getColumn(),"Function "+functionDefinition.getName()+" is already defined in the scope.");
 
         else{
             symbolTable.set();
@@ -62,8 +59,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
         List<String> existingFields = new ArrayList<>();
         for(RecordField field : recordType.getFields()){
             if(existingFields.contains(field.getName()))
-                ErrorHandler.getInstance().addError(new ErrorType(field.getLine(), field.getColumn(),
-                        "Record field "+field.getName()+" is already defined."));
+                new ErrorType(field.getLine(), field.getColumn(),"Record field "+field.getName()+" is already defined.");
             else
                 existingFields.add(field.getName());
         }
