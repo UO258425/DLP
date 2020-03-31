@@ -1,6 +1,7 @@
 package ast.type;
 
 import ast.program.VariableDefinition;
+import ast.statement.FunctionInvocation;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -52,4 +53,34 @@ public class FunctionType extends AbstractType {
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+
+
+    @Override
+    public boolean equivalent(Type t) {
+        if(t instanceof ArrayType)
+            return this.equivalent(((ArrayType) t).getType());
+        else if(t instanceof FunctionType)
+            return this.equivalent(((FunctionType) t).getReturnType());
+        else
+            return this.equivalent(t);
+    }
+
+    @Override
+    public Type parenthesis(Type[] parameterTypes, FunctionInvocation functionInvocation) {
+        if(parameters.size() != parameterTypes.length)
+            return new ErrorType(functionInvocation.getLine(), functionInvocation.getColumn(), "Parameter number mismatch");
+        for(int i = 0; i<parameters.size();i++){
+            if(!parameters.get(i).getType().equivalent(parameterTypes[i]))
+                return new ErrorType(functionInvocation.getLine(), functionInvocation.getColumn(), "The type of the parameter does not match");
+        }
+        return returnType;
+    }
+
+    @Override
+    public int getNumberOfBytes() {
+        throw new IllegalStateException("This type does not have size");
+    }
+
+
 }

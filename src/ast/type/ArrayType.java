@@ -50,4 +50,29 @@ public class ArrayType extends AbstractType{
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+    @Override
+    public boolean equivalent(Type t) {
+        if(t instanceof ArrayType)
+            return this.getType().equivalent(((ArrayType) t).getType());
+        else if(t instanceof FunctionType)
+            return this.getType().equivalent(((FunctionType) t).getReturnType());
+        else
+            return this.getType().equivalent(t);
+    }
+
+    @Override
+    public Type squareBrackets(Type t) {
+        if(t instanceof IntegerType)
+            return this.getType();
+        else if (t instanceof ErrorType)
+            return t;
+        else
+            return new ErrorType(t.getLine(), t.getColumn(), "Array can only be indexed with an integer");
+    }
+
+    @Override
+    public int getNumberOfBytes() {
+        return type.getNumberOfBytes() * size;
+    }
 }

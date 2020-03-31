@@ -1,9 +1,12 @@
 package ast.type;
 
+import ast.expression.FieldAccess;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class RecordType extends AbstractType {
 
@@ -37,5 +40,31 @@ public class RecordType extends AbstractType {
         return visitor.visit(this, param);
     }
 
+    @Override
+    public Type dot(String id, FieldAccess fieldAccess) {
+        for(RecordField r : getFields()){
+            if(r.getName().equals(id))
+                return r.getType();
+        }
+        return new ErrorType(fieldAccess.getLine(), fieldAccess.getColumn(), "There is no field with that id");
+    }
 
+    @Override
+    public boolean equivalent(Type t) {
+        if(t instanceof ArrayType)
+            return this.equivalent(((ArrayType) t).getType());
+        else if(t instanceof FunctionType)
+            return this.equivalent(((FunctionType) t).getReturnType());
+        else
+            return this.equivalent(t);
+    }
+
+    @Override
+    public int getNumberOfBytes() {
+        int total = 0;
+        for(RecordField rf : getFields()){
+            total += rf.getType().getNumberOfBytes();
+        }
+        return total;
+    }
 }

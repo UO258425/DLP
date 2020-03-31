@@ -5,21 +5,21 @@ import visitor.Visitor;
 
 public class Cast extends AbstractExpression {
 
-    private Type type;
+    private Type castType;
     private Expression expression;
 
     public Cast(int line, int column, Type type, Expression expression) {
         super(line, column);
         setExpression(expression);
-        setType(type);
+        setCastType(type);
     }
 
-    public Type getType() {
-        return type;
+    public Type getCastType() {
+        return castType;
     }
 
-    private void setType(Type type) {
-        this.type = type;
+    private void setCastType(Type type) {
+        this.castType = type;
     }
 
     public Expression getExpression() {
@@ -33,7 +33,7 @@ public class Cast extends AbstractExpression {
     @Override
     public String toString() {
         return "Cast{" +
-                "type=" + type +
+                "type=" + castType +
                 ", expression=" + expression +
                 '}';
     }

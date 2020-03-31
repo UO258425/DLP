@@ -8,221 +8,302 @@ import ast.statement.*;
 import ast.type.*;
 import visitor.AbstractVisitor;
 
-public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
+public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
-    public Void visit(Program program, Void param) {
-        program.getBody().forEach(definition -> definition.accept(this,null));
+    public Void visit(Program program, Type param) {
+        program.getBody().forEach(definition -> definition.accept(this, param));
         program.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(VariableDefinition variableDefinition, Void param) {
-        variableDefinition.getType().accept(this, null);
+    public Void visit(VariableDefinition variableDefinition, Type param) {
+        variableDefinition.getType().accept(this, param);
         variableDefinition.setLvalue(false);
         return null;
     }
-    
+
+    /*
+      FunctionDefinition stmt -> functionType id variableDefinitions* statements*
+      statements*.forEach(stmt1 -> {if(stmt1 instanceof Return)
+         if(stmt.return.type != functionType.type)
+             new ErrorType(...) //type mismatch with function signature and return stmt
+      })
+     */
     @Override
-    public Void visit(FunctionDefinition functionDefinition, Void param) {
-        functionDefinition.getType().accept(this, null);
+    public Void visit(FunctionDefinition functionDefinition, Type param) {
+        functionDefinition.getType().accept(this,  ((FunctionType)functionDefinition.getType()).getReturnType());
         functionDefinition.getStatements().forEach(
-                fd -> fd.accept(this,null));
+                stmt ->stmt.accept(this,((FunctionType)functionDefinition.getType()).getReturnType()));
         functionDefinition.setLvalue(false);
         return null;
     }
 
+    /*
+     * assignment stmt -> exp1 exp2
+     * if(!exp2.type.equivalent(exp3.type))
+         new ErrorType(exp1.getline(), exp1.getColumn() ...)
+     */
     @Override
-    public Void visit(Assignment assignment, Void param) {
-        assignment.getLeft().accept(this, null);
-        if(!assignment.getLeft().isLvalue())
-            new ErrorType(assignment.getLine(), assignment.getColumn(),"lvalue expected");
-        assignment.getRight().accept(this, null);
+    public Void visit(Assignment assignment, Type param) {
+        assignment.getLeft().accept(this, param);
+        if (!assignment.getLeft().isLvalue())
+            new ErrorType(assignment.getLine(), assignment.getColumn(), "lvalue expected");
+        assignment.getRight().accept(this, param);
         assignment.setLvalue(false);
 
+        if (!(assignment.getLeft().getType() instanceof ErrorType) &&
+                !(assignment.getRight().getType() instanceof ErrorType)) {
+            if (!assignment.getLeft().getType().equivalent(assignment.getRight().getType()))
+                new ErrorType(assignment.getLine(), assignment.getColumn(), "Not equivalent types, trying o assign" +
+                        assignment.getRight().getType() + " to " + assignment.getLeft().getType());
+        }
+
         return null;
     }
 
+    /*
+     * funcInvocation: exp1 -> exp2 exp3*
+     * exp1.type = exp2.type.parenthesis(exp3.stream().map(arg ->arg.type).toArray(Type[]::new),exp1)
+     */
     @Override
-    public Void visit(FunctionInvocation functionInvocation, Void param) {
-        functionInvocation.getFunction().accept(this, null);
-        functionInvocation.getParameters().forEach(p -> p.accept(this, null));
+    public Void visit(FunctionInvocation functionInvocation, Type param) {
+        functionInvocation.getFunction().accept(this, param);
+        functionInvocation.getParameters().forEach(p -> p.accept(this, param));
         functionInvocation.setLvalue(false);
+        functionInvocation.setType(functionInvocation.getFunction().getType().parenthesis(functionInvocation.getParameters().stream().map(Expression::getType).toArray(Type[]::new), functionInvocation));
         return null;
     }
 
+    /*
+    ifElse: stm1 -> exp stmt2 stmt3*
+    if(!exp.type.isBoolean())
+        exp1 = new ErrorType(...
+     */
     @Override
-    public Void visit(IfElse ifElse, Void param) {
-        ifElse.getCondition().accept(this, null);
-        ifElse.getIfBody().forEach(x -> x.accept(this, null));
-        ifElse.getElseBody().forEach(x -> x.accept(this, null));
+    public Void visit(IfElse ifElse, Type param) {
+        ifElse.getCondition().accept(this, param);
+        ifElse.getIfBody().forEach(x -> x.accept(this, param));
+        ifElse.getElseBody().forEach(x -> x.accept(this, param));
         ifElse.setLvalue(false);
+
+        if(!ifElse.getCondition().getType().isBoolean())
+            new ErrorType(ifElse.getLine(), ifElse.getColumn(), "Condition of an if must be boolean");
         return null;
     }
 
     @Override
-    public Void visit(Read read, Void param) {
-        read.getExpression().accept(this, null);
-        if(!read.getExpression().isLvalue())
-            new ErrorType(read.getExpression().getLine(), read.getExpression().getColumn(),"lvalue expected");
+    public Void visit(Read read, Type param) {
+        read.getExpression().accept(this, param);
+        if (!read.getExpression().isLvalue())
+            new ErrorType(read.getExpression().getLine(), read.getExpression().getColumn(), "lvalue expected");
         read.setLvalue(false);
         return null;
     }
 
+    /*
+    return stmt -> exp
+    if(stmt.returnType.equivalent(exp.type))
+        new ErrorType(stmt, line, stmt.column, "Cannot return that")
+     */
     @Override
-    public Void visit(Return returnStatement, Void param) {
-        returnStatement.getReturned().accept(this, null);
+    public Void visit(Return returnStatement, Type param) {
+        returnStatement.getReturned().accept(this, param);
         returnStatement.setLvalue(false);
+        if(!returnStatement.getReturned().getType().equals(param))
+            new ErrorType(returnStatement.getLine(), returnStatement.getColumn(), "The returned type does not match the return type of the function");
         return null;
     }
 
+    /*
+     * whilestmt: stm1 -> exp stm2*
+        if(!exp.type.isBoolean())
+            exp1 = new errorType(exp.line, exp.column, "type not boolean")
+     */
     @Override
-    public Void visit(While whileStatement, Void param) {
-        whileStatement.getCondition().accept(this, null);
-        whileStatement.getBody().forEach(x -> x.accept(this, null));
+    public Void visit(While whileStatement, Type param) {
+        whileStatement.getCondition().accept(this, param);
+        whileStatement.getBody().forEach(x -> x.accept(this, param));
         whileStatement.setLvalue(false);
+
+        if (!whileStatement.getCondition().getType().isBoolean())
+            new ErrorType(whileStatement.getLine(), whileStatement.getColumn(), "The condition of the while must be boolean");
         return null;
     }
 
     @Override
-    public Void visit(Write write, Void param) {
-        write.getExpression().accept(this, null);
+    public Void visit(Write write, Type param) {
+        write.getExpression().accept(this, param);
         write.setLvalue(false);
         return null;
     }
 
+    /* arithmetic: exp1 -> exp2 (+|-|/|*|&) exp3
+     *exp1.type = exp2.type.arith(exp3.type, exp1)
+     */
     @Override
-    public Void visit(ArithmeticExpression arithmeticExpression, Void param) {
-        arithmeticExpression.getLeft().accept(this, null);
-        arithmeticExpression.getRight().accept(this, null);
+    public Void visit(ArithmeticExpression arithmeticExpression, Type param) {
+        arithmeticExpression.getLeft().accept(this, param);
+        arithmeticExpression.getRight().accept(this, param);
         arithmeticExpression.setLvalue(false);
+        arithmeticExpression.setType(arithmeticExpression.getLeft().getType().arithmetic(arithmeticExpression.getRight().getType()));
         return null;
     }
 
+    /*
+     * indexing: exp1 -> exp2 exp3
+     * exp1.type = exp2.type.squareBrackets(exp3.type, exp1)
+     */
     @Override
-    public Void visit(ArrayIndexing arrayIndexing, Void param) {
-        arrayIndexing.getIndex().accept(this, null);
-        arrayIndexing.getVariable().accept(this, null);
+    public Void visit(ArrayIndexing arrayIndexing, Type param) {
+        arrayIndexing.getIndex().accept(this, param);
+        arrayIndexing.getVariable().accept(this, param);
         arrayIndexing.setLvalue(true);
+        arrayIndexing.setType(arrayIndexing.getVariable().getType().squareBrackets(arrayIndexing.getIndex().getType()));
         return null;
     }
 
+    /*
+    cast exp1 -> type exp2
+    exp1.type = exp2.type.cast(type, exp1)
+     */
     @Override
-    public Void visit(Cast cast, Void param) {
-        cast.getExpression().accept(this, null);
-        cast.getType().accept(this, null);
+    public Void visit(Cast cast, Type param) {
+        cast.getExpression().accept(this, param);
+        cast.getType().accept(this, param);
         cast.setLvalue(false);
+        cast.setType(cast.getExpression().getType().cast(cast.getCastType()));
         return null;
     }
 
     @Override
-    public Void visit(CharacterLiteral characterLiteral, Void param) {
+    public Void visit(CharacterLiteral characterLiteral, Type param) {
         characterLiteral.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(DoubleLiteral doubleLiteral, Void param) {
+    public Void visit(DoubleLiteral doubleLiteral, Type param) {
         doubleLiteral.setLvalue(false);
         return null;
     }
 
+    /*
+        fieldAccess exp1 -> exp2 ID
+        exp1.tpe = exp2.type.dot(ID, exp1)
+     */
     @Override
-    public Void visit(FieldAccess fieldAccess, Void param) {
-        fieldAccess.getExpression().accept(this, null);
+    public Void visit(FieldAccess fieldAccess, Type param) {
+        fieldAccess.getExpression().accept(this, param);
         fieldAccess.setLvalue(true);
+        fieldAccess.setType(fieldAccess.getExpression().getType().dot(fieldAccess.getFieldName(), fieldAccess));
         return null;
     }
 
+    /*
+     * comparison: exp1 -> exp2 (&& | || ) exp3
+     * exp1.type = exp2.type.comparison(expression3.type, exp1)
+     */
     @Override
-    public Void visit(LogicalExpression logicalExpression, Void param) {
-        logicalExpression.getLeft().accept(this, null);
-        logicalExpression.getRight().accept(this, null);
+    public Void visit(LogicalExpression logicalExpression, Type param) {
+        logicalExpression.getLeft().accept(this, param);
+        logicalExpression.getRight().accept(this, param);
         logicalExpression.setLvalue(false);
+        logicalExpression.setType(logicalExpression.getLeft().getType().logical(logicalExpression.getRight().getType()));
         return null;
     }
 
+    /*
+        unaryminus exp1 -> exp2
+        exp1.type  = exp2-type.not()
+    */
     @Override
-    public Void visit(UnaryMinus unaryMinus, Void param) {
-        unaryMinus.getExpression().accept(this, null);
+    public Void visit(UnaryMinus unaryMinus, Type param) {
+        unaryMinus.getExpression().accept(this, param);
         unaryMinus.setLvalue(false);
+        unaryMinus.setType(unaryMinus.getExpression().getType().unaryMinus(unaryMinus));
         return null;
     }
 
+    /*
+    unarynot exp1 -> exp2
+    exp1.type  = exp2-type.not()
+     */
     @Override
-    public Void visit(UnaryNot unaryNot, Void param) {
-        unaryNot.getExpression().accept(this, null);
+    public Void visit(UnaryNot unaryNot, Type param) {
+        unaryNot.getExpression().accept(this, param);
         unaryNot.setLvalue(false);
+        unaryNot.setType(unaryNot.getExpression().getType().unaryNot(unaryNot));
         return null;
     }
 
     @Override
-    public Void visit(Variable variable, Void param) {
+    public Void visit(Variable variable, Type param) {
         variable.setLvalue(true);
         return null;
     }
 
     @Override
-    public Void visit(IntegerLiteral integerLiteral, Void param) {
+    public Void visit(IntegerLiteral integerLiteral, Type param) {
         integerLiteral.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(ArrayType arrayType, Void param) {
-        arrayType.getType().accept(this, null);
+    public Void visit(ArrayType arrayType, Type param) {
+        arrayType.getType().accept(this, param);
         arrayType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(CharacterType characterType, Void param) {
+    public Void visit(CharacterType characterType, Type param) {
         characterType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(DoubleType doubleType, Void param) {
+    public Void visit(DoubleType doubleType, Type param) {
         doubleType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(ErrorType errorType, Void param) {
+    public Void visit(ErrorType errorType, Type param) {
         errorType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(FunctionType functionType, Void param) {
-        functionType.getReturnType().accept(this, null);
-        functionType.getParameters().forEach(p -> p.accept(this, null));
+    public Void visit(FunctionType functionType, Type param) {
+        functionType.getReturnType().accept(this, param);
+        functionType.getParameters().forEach(p -> p.accept(this, param));
         functionType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(IntegerType integerType, Void param) {
+    public Void visit(IntegerType integerType, Type param) {
         integerType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(RecordField recordField, Void param) {
-        recordField.getType().accept(this, null);
+    public Void visit(RecordField recordField, Type param) {
+        recordField.getType().accept(this, param);
         recordField.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(RecordType recordType, Void param) {
-        recordType.getFields().forEach(f -> f.accept(this, null));
+    public Void visit(RecordType recordType, Type param) {
+        recordType.getFields().forEach(f -> f.accept(this, param));
         recordType.setLvalue(false);
         return null;
     }
 
     @Override
-    public Void visit(VoidType voidType, Void param) {
+    public Void visit(VoidType voidType, Type param) {
         voidType.setLvalue(false);
         return null;
     }

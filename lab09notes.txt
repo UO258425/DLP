@@ -1,0 +1,60 @@
+arithmetic: exp1 -> exp2 (+|-|/|*|&) exp3
+exp1.type = exp2.type.arith(exp3.type, exp1)
+
+indexing: exp1 -> exp2 exp3
+exp1.type = exp2.type.squareBrackets(exp3.type, exp1)
+
+comparison: exp1 -> exp2 (&& | || ) exp3
+exp1.type = exp2.type.comparison(expression3.type, exp1)
+
+assignment stmt -> exp1 exp2
+if(!exp2.type.equivalent(exp3.type))
+    new ErrorType(exp1.getline(), exp1.getColumn() ...)
+
+funcInvocation: exp1 -> exp2 exp3*
+exp1.type ) exp2.type.parenthesis(exp3.stream().map(arg ->arg.type).toArray(Type[]::new),
+    exp1)
+
+whilestmt: stm1 -> exp stm2*
+if(!exp.type.isBoolean())
+    exp1 = new errorType(exp.line, exp.column, "type not boolean")
+
+
+FunctionDefinition stmt -> functionType id variableDefinitions* statements*
+statements*.forEach(stmt1 -> {if(stmt1 instanceof Return)
+    if(stmt.return.type != functionType.type)
+        new ErrorType(...) //type mismatch with function signature and return stmt
+})
+
+for(statement stm: statements*){
+stm.returnType = type.returntype}
+
+ifElse: stm1 -> exp stmt2 stmt3*
+if(!exp.type.isBoolean())
+    exp1 = new ErrorType(...
+
+
+fieldAccess exp1 -> exp2 ID
+exp1.tpe = exp2.type.dot(ID, exp1)
+
+cast exp1 -> type exp2
+exp1.type = exp2.type.cast(type, exp1)
+
+unarynot exp1 -> exp2
+exp1.type  = exp2-type.not()
+//
+if(!exp2.type.isPrimitive())
+    exp1 = new errorType()
+else
+    exp1.type = exp2.type
+
+unaryminus exp1 -> exp2
+if(!exp2.type.isPrimitive())
+    exp1 = new ErrorType(...)
+else
+    exp1 = exp2.type
+
+return stmt -> exp
+if(stmt.returnType.equivalent(exp.type))
+new ErrorType(stmt, line, stmt.column, "Cannot return that")
+

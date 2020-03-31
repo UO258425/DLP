@@ -2,12 +2,15 @@ package ast.statement;
 
 import ast.expression.Expression;
 import ast.expression.Variable;
+import ast.type.Type;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionInvocation extends AbstractStatement implements Expression {
+
+    private Type type;
 
     private Variable function;
     private List<Expression> parameters = new ArrayList<>();
@@ -44,5 +47,15 @@ public class FunctionInvocation extends AbstractStatement implements Expression 
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public Type getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(Type t) {
+        this.type = t;
     }
 }

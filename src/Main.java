@@ -1,4 +1,5 @@
 import ast.program.Program;
+import codegeneration.OffsetVisitor;
 import error.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
@@ -32,6 +33,9 @@ public class Main {
 
 		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
 		typeCheckingVisitor.visit(ast, null);
+
+		OffsetVisitor offsetVisitor = new OffsetVisitor();
+		offsetVisitor.visit(ast, null);
 
 		if(ErrorHandler.getInstance().anyError())
 			ErrorHandler.getInstance().showErrors(System.err);
