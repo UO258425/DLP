@@ -240,6 +240,10 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
     public Void visit(Variable variable, Type param) {
         variable.setLvalue(true);
+        if(variable.getDefinition() == null)
+            variable.setType(new ErrorType(variable.getLine(), variable.getColumn(), "The variable is not defined."));
+        else
+            variable.setType(variable.getDefinition().getType());
         return null;
     }
 
