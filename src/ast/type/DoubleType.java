@@ -58,4 +58,9 @@ public class DoubleType extends AbstractType {
         return 4;
     }
 
+    @Override
+    public String getSuffix() {
+        return "f";
+    }
+
 }

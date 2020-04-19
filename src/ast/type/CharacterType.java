@@ -52,4 +52,9 @@ public class CharacterType extends AbstractType{
     public int getNumberOfBytes() {
         return 1;
     }
+
+    @Override
+    public String getSuffix() {
+        return "b";
+    }
 }

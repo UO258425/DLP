@@ -63,4 +63,9 @@ public class IntegerType extends AbstractType {
         return 2;
     }
 
+    @Override
+    public String getSuffix() {
+        return "i";
+    }
+
 }

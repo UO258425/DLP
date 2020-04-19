@@ -21,4 +21,6 @@ public interface Type extends ASTNode {
     Type unaryMinus(UnaryMinus unaryMinus);
     Type unaryNot(UnaryNot unaryNot);
     Type dot(String id, FieldAccess fieldAccess);
+
+    String getSuffix();
 }

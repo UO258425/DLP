@@ -28,14 +28,18 @@ public class Main {
 		CmmParser parser = new CmmParser(tokens);	
 		Program ast = parser.program().ast;
 
+
+		//Semantic phase
 		IdentificationVisitor identificationVisitor = new IdentificationVisitor();
 		identificationVisitor.visit(ast, null);
 
 		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
 		typeCheckingVisitor.visit(ast, null);
 
+		//Code generation phase
 		OffsetVisitor offsetVisitor = new OffsetVisitor();
 		offsetVisitor.visit(ast, null);
+
 
 		if(ErrorHandler.getInstance().anyError())
 			ErrorHandler.getInstance().showErrors(System.err);

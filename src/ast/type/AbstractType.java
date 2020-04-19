@@ -51,4 +51,8 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
     public Type dot(String id, FieldAccess fieldAccess) {
         return new ErrorType(fieldAccess.getLine(), fieldAccess.getColumn(), "Cant access field");
     }
+
+    public  String getSuffix(){
+        return "";
+    }
 }
