@@ -29,7 +29,7 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
     }
 
     public Type squareBrackets(Type t) {
-        return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for array accessing operation");
+        return new ErrorType(t.getLine(), t.getColumn(), "Square brackets cannot be applied to something other than array");
     }
 
     public Type parenthesis(Type[] parameterTypes, FunctionInvocation functionInvocation) {

@@ -55,7 +55,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         if (!(assignment.getLeft().getType() instanceof ErrorType) &&
                 !(assignment.getRight().getType() instanceof ErrorType)) {
             if (!assignment.getLeft().getType().equivalent(assignment.getRight().getType()))
-                new ErrorType(assignment.getLine(), assignment.getColumn(), "Not equivalent types, trying o assign" +
+                new ErrorType(assignment.getLine(), assignment.getColumn(), "Not equivalent types, trying to assign " +
                         assignment.getRight().getType() + " to " + assignment.getLeft().getType());
         }
 
@@ -110,7 +110,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     public Void visit(Return returnStatement, Type param) {
         returnStatement.getReturned().accept(this, param);
         returnStatement.setLvalue(false);
-        if(!returnStatement.getReturned().getType().equals(param))
+        if(!returnStatement.getReturned().getType().equivalent(param))
             new ErrorType(returnStatement.getLine(), returnStatement.getColumn(), "The returned type does not match the return type of the function");
         return null;
     }
@@ -179,12 +179,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
     public Void visit(CharacterLiteral characterLiteral, Type param) {
         characterLiteral.setLvalue(false);
+        characterLiteral.setType(new CharacterType(characterLiteral.getLine(), characterLiteral.getColumn()));
         return null;
     }
 
     @Override
     public Void visit(DoubleLiteral doubleLiteral, Type param) {
         doubleLiteral.setLvalue(false);
+        doubleLiteral.setType(new DoubleType(doubleLiteral.getLine(), doubleLiteral.getColumn()));
         return null;
     }
 
@@ -250,6 +252,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
     public Void visit(IntegerLiteral integerLiteral, Type param) {
         integerLiteral.setLvalue(false);
+        integerLiteral.setType(new IntegerType(integerLiteral.getLine(), integerLiteral.getColumn()));
         return null;
     }
 

@@ -51,6 +51,7 @@ public class ArrayType extends AbstractType{
         return visitor.visit(this, param);
     }
 
+    /*
     @Override
     public boolean equivalent(Type t) {
         if(t instanceof ArrayType)
@@ -59,7 +60,7 @@ public class ArrayType extends AbstractType{
             return this.getType().equivalent(((FunctionType) t).getReturnType());
         else
             return this.getType().equivalent(t);
-    }
+    }*/
 
     @Override
     public Type squareBrackets(Type t) {

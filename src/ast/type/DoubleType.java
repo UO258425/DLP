@@ -11,7 +11,7 @@ public class DoubleType extends AbstractType {
 
     @Override
     public String toString() {
-        return "DoubleType{}";
+        return "double";
     }
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
@@ -49,12 +49,8 @@ public class DoubleType extends AbstractType {
 
     @Override
     public boolean equivalent(Type t) {
-        if(t instanceof ArrayType)
-            return this.equivalent(((ArrayType) t).getType());
-        else if(t instanceof FunctionType)
-            return this.equivalent(((FunctionType) t).getReturnType());
-        else
-            return this.equivalent(t);
+        return t instanceof DoubleType;
+
     }
 
     @Override

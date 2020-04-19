@@ -2,7 +2,9 @@ package codegeneration;
 
 /*
 execute[[Program: stmt -> definition*]] =
+    <call> main
     definition*.foreach(def -> execute[[def]])
+    <halt>
  */
 
 
@@ -12,8 +14,14 @@ execute[[variableDefinition: definition -> type ID]] =
  */
 
 /*
-execute[[FunctionDefinition: functionDefinition -> type ID variableDefinition* statement*]] =
+execute[[FunctionDefinition: functionDefinition -> type ID statement*]] =
     ID <:>
+    execute[[type]]
+
+    for(Statement st : statements^*){
+        if(st instanceof variableDefinitions)
+    }
+
     int bytesLocals = -variableDefinition*.get(variableDefinition*.size()-1).offset)
     <enter> bytesLocals
     int bytesParams = type.parameters.stream().mapToInt(

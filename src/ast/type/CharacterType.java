@@ -10,7 +10,7 @@ public class CharacterType extends AbstractType{
 
     @Override
     public String toString() {
-        return "CharacterType{}";
+        return "character";
     }
 
     @Override
@@ -39,12 +39,8 @@ public class CharacterType extends AbstractType{
 
     @Override
     public boolean equivalent(Type t) {
-        if(t instanceof ArrayType)
-            return this.equivalent(((ArrayType) t).getType());
-        else if(t instanceof FunctionType)
-            return this.equivalent(((FunctionType) t).getReturnType());
-        else
-            return this.equivalent(t);
+        return t instanceof CharacterType;
+
     }
 
     @Override

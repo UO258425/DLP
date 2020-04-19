@@ -49,6 +49,7 @@ public class RecordType extends AbstractType {
         return new ErrorType(fieldAccess.getLine(), fieldAccess.getColumn(), "There is no field with that id");
     }
 
+    /*
     @Override
     public boolean equivalent(Type t) {
         if(t instanceof ArrayType)
@@ -58,6 +59,7 @@ public class RecordType extends AbstractType {
         else
             return this.equivalent(t);
     }
+    */
 
     @Override
     public int getNumberOfBytes() {

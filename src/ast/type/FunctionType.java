@@ -56,6 +56,7 @@ public class FunctionType extends AbstractType {
 
 
 
+    /*
     @Override
     public boolean equivalent(Type t) {
         if(t instanceof ArrayType)
@@ -65,6 +66,7 @@ public class FunctionType extends AbstractType {
         else
             return this.equivalent(t);
     }
+    */
 
     @Override
     public Type parenthesis(Type[] parameterTypes, FunctionInvocation functionInvocation) {
