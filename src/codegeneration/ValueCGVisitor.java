@@ -12,6 +12,10 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
         this.cg = cg;
     }
 
+    public void setAddressCGVisitor(AddressCGVisitor av){
+        addressCGVisitor = av;
+    }
+
 
 
     /*

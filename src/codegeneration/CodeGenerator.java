@@ -8,11 +8,16 @@ import java.io.PrintStream;
 
 public class CodeGenerator {
 
-    private PrintStream printStream = new PrintStream(System.out);
+    private PrintStream printStream;
+
+    public CodeGenerator()  {
+        this.printStream = new PrintStream(System.out);
+    }
 
     public CodeGenerator(String outFileName) throws FileNotFoundException {
         this.printStream = new PrintStream(new FileOutputStream(outFileName));
     }
+
 
     public void push(String suffix, double value) {
         printStream.println("\tpush" + suffix + " " + value);
@@ -110,5 +115,35 @@ public class CodeGenerator {
 
     public void commentVariable(Type type, String name, int offset) {
         printStream.println("\t' * "+ type + " " + name + " (offset "+ offset + ")");
+    }
+
+    public void mainInvocation() {
+        printStream.println("\n' Invocation to the main function");
+        printStream.println("call main");
+        printStream.println("halt");
+    }
+
+    public void sourceComment(String inputFileName) {
+        printStream.println("\n#source \""+inputFileName+"\"\n");
+    }
+
+    public void lineComment(int line) {
+        printStream.println("#line:\t"+line);
+    }
+
+    public void functionLabel(String name) {
+        printStream.println("  "+name+":");
+    }
+
+    public void comment(String comment){
+        printStream.println("\t' * "+comment);
+    }
+
+    public void enter(int number) {
+        printStream.println("\tenter "+number);
+    }
+
+    public void ret(int bytesReturn, int bytesLocalVariables, int bytesParameters) {
+        printStream.println("\tret "+bytesReturn+", "+bytesLocalVariables+", "+bytesParameters);
     }
 }

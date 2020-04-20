@@ -1,5 +1,5 @@
 import ast.program.Program;
-import codegeneration.OffsetVisitor;
+import codegeneration.*;
 import error.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
@@ -40,6 +40,19 @@ public class Main {
 		OffsetVisitor offsetVisitor = new OffsetVisitor();
 		offsetVisitor.visit(ast, null);
 
+		String outputFileName = "outputProgam.txt";
+		CodeGenerator codeGenerator = new CodeGenerator();
+		codeGenerator.sourceComment(args[0]);
+
+		ExecuteCGVisitor executeCGVisitor = new ExecuteCGVisitor(codeGenerator);
+		AddressCGVisitor addressCGVisitor = new AddressCGVisitor(codeGenerator);
+		ValueCGVisitor valueCGVisitor = new ValueCGVisitor(codeGenerator);
+
+		valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
+		executeCGVisitor.setAddressCGVisitor(addressCGVisitor);
+		executeCGVisitor.setValueCGVisitor(valueCGVisitor);
+
+		executeCGVisitor.visit(ast, null);
 
 		if(ErrorHandler.getInstance().anyError())
 			ErrorHandler.getInstance().showErrors(System.err);
