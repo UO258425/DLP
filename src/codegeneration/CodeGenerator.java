@@ -8,6 +8,8 @@ import java.io.PrintStream;
 
 public class CodeGenerator {
 
+    private int labels = 0;
+
     private PrintStream printStream;
 
     public CodeGenerator()  {
@@ -18,6 +20,12 @@ public class CodeGenerator {
         this.printStream = new PrintStream(new FileOutputStream(outFileName));
     }
 
+
+    public int getLabels(int i) {
+        int tmp = labels;
+        labels+=i;
+        return tmp;
+    }
 
     public void push(String suffix, double value) {
         printStream.println("\tpush" + suffix + " " + value);
@@ -146,4 +154,17 @@ public class CodeGenerator {
     public void ret(int bytesReturn, int bytesLocalVariables, int bytesParameters) {
         printStream.println("\tret "+bytesReturn+", "+bytesLocalVariables+", "+bytesParameters);
     }
+
+    public void label(int labelNumber) {
+        printStream.println(" label"+labelNumber+":");
+    }
+
+    public void jz(int i) {
+        printStream.println("\tjz label"+i);
+    }
+
+    public void jmp(int labelNumber) {
+        printStream.println("\tjmp label"+labelNumber);
+    }
+
 }

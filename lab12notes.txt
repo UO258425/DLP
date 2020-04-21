@@ -1,0 +1,80 @@
+
+
+    /*
+    address[[FieldAccess: expression1 -> expression2 ID]]=
+        address[[expression2]]
+        <pushi > expression2.type.getField(ID)
+        <addi>
+     */
+
+
+    /*
+    value[[FieldAccess: exp1 -> exp2 ID]]=
+        address[[exp1]]
+        <load > exp1.type.suffix
+     */
+
+    /*
+    address[[Indexing: exp1 -> exp2 exp3]] =
+        address[[exp2]]
+        value[[exp3]]
+        <pushi> exp1.type.numberOfBytes()
+        <muli>
+        <addi>
+    */
+
+    /*
+    value[[Indexing: exp1 -> exp2 exp3]]=
+        address[[exp1]]
+        <load > exp1.type.suffix
+    */
+
+    /*
+    execute[[Return: stmt -> expression]](int BytesReturn, int bytesLocals, intBytesParams)=
+        value[[expression]]
+
+        int bytesParams = type.parameters.stream().mapToInt(
+                    param -> param.type.numberOfBytes()).sum();
+        int bytesLocals = -variableDefinition.get(variableDefinition.size()-1).offset)
+
+        int bytesReturn = expression.type.numberOfBytes();
+
+        <ret> bytesReturn, bytesLocals, bytesParams
+    */
+
+    /*
+    execute[[While: stmt -> expression statements*]]=
+        int labels = cg.getLabels()
+        <label> cg.getLabel() :>
+        value[[expression]]
+        <jz label2>
+        statements*.foreach( st -> execute[[st]])
+        <jmp label1>
+        <label2:>
+    */
+
+
+    /*
+    execute[[IfElse: stmt -> expression1 statements1* statements2*]]=
+        value[[expression1]]
+        <jz labelElse>
+        statements1*.foreach(st -> execute[[st]])
+        <jmp LabelEnd>
+        <labelElse:>
+        statements2*.foreach(st -> execute[[st]])
+        <LabelEnd:>
+    */
+
+
+    /*
+    value[[FunctionInvocation: expression -> ID expressions*]]=
+        expressions*.foreach(exp -> value[[exp]])
+        <call > ID
+    */
+
+    /*
+     Execute[[FunctionInvocation: stmt -> ID expressions* ]]=
+         value[[expression]]
+        if (!(stmt.type instanceof VoidType))
+            <pop> stmt.type.suffix
+    */

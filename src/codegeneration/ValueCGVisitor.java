@@ -99,4 +99,19 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void> {
         cg.logical(logicalExpression.getOperation(), logicalExpression.getType().getSuffix());
         return null;
     }
+
+    /*
+    value[[FieldAccess exp1 -> exp2 ID]]=
+        address[[exp1]]
+        <load > exp1.type.suffix
+     */
+
+    /*
+    value[[Indexing: exp1 -> exp2 exp3]]=
+        address[[exp1]]
+        <load > exp1.type.suffix
+    */
+
+
+
 }

@@ -35,6 +35,15 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         return null;
     }
 
+    /*
+    address[[FieldAccess: expression1 -> expression2 ID]]=
+        address[[expression2]]
+        <pushi > expression2.type.getField(ID)
+        <addi>
+     */
+
+
+
 
     /*
     address[[indexing: expression1 -> expression2 expression3]] =
