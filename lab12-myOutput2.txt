@@ -13,7 +13,7 @@ call main
 halt
 
 
-#line:	12
+#line	12
 
   p:
 	' * Parameters
@@ -21,7 +21,7 @@ halt
 	enter 0
 	ret 0, 0, 0
 
-#line:	14
+#line	14
 
   f:
 	' * Parameters
@@ -32,7 +32,7 @@ halt
 	' * char c (offset -5)
 	enter 5
 
-#line:	17
+#line	17
 	' * Assignment
 	push	bp
 	pushi	-4
@@ -41,7 +41,8 @@ halt
 	pushi	2
 	addi
 	loadb
-	b2f
+	b2i
+	i2f
 	pusha	7
 	pushi	0
 	addi
@@ -61,7 +62,7 @@ halt
 	addf
 	storef
 
-#line:	18
+#line	18
 	' * Assignment
 	push	bp
 	pushi	-5
@@ -69,7 +70,7 @@ halt
 	pushb	48
 	storeb
 
-#line:	19
+#line	19
 	' * Return
 	push	bp
 	pushi	-5
@@ -78,7 +79,7 @@ halt
 	b2i
 	ret 2, 5, 6
 
-#line:	24
+#line	24
 
   fill:
 	' * Parameters
@@ -90,7 +91,7 @@ halt
 	' * int inc (offset -4)
 	enter 4
 
-#line:	26
+#line	26
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -98,7 +99,7 @@ halt
 	pushi	0
 	storei
 
-#line:	27
+#line	27
 	' * Assignment
 	push	bp
 	pushi	-4
@@ -109,7 +110,7 @@ halt
 	loadi
 	storei
 
-#line:	28
+#line	28
 	' * While
  label0:
 	push	bp
@@ -121,7 +122,7 @@ halt
 	jz label1
 	' * Body of the while statement
 
-#line:	29
+#line	29
 	' * Assignment
 	pusha	10
 	push	bp
@@ -149,7 +150,7 @@ halt
 	addi
 	storei
 
-#line:	30
+#line	30
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -162,7 +163,7 @@ halt
 	addi
 	storei
 
-#line:	31
+#line	31
 	' * Assignment
 	push	bp
 	pushi	-4
@@ -181,7 +182,7 @@ halt
  label1:
 	ret 0, 4, 6
 
-#line:	35
+#line	35
 
   show:
 	' * Parameters
@@ -190,7 +191,7 @@ halt
 	' * int i (offset -2)
 	enter 2
 
-#line:	37
+#line	37
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -198,7 +199,7 @@ halt
 	pushi	0
 	storei
 
-#line:	38
+#line	38
 	' * While
  label2:
 	push	bp
@@ -210,7 +211,7 @@ halt
 	jz label3
 	' * Body of the while statement
 
-#line:	39
+#line	39
 	' * Write
 	pushb	40
 	outb
@@ -257,7 +258,7 @@ halt
 	pushb	32
 	outb
 
-#line:	40
+#line	40
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -272,13 +273,13 @@ halt
 	jmp label2
  label3:
 
-#line:	42
+#line	42
 	' * Write
 	pushb	10
 	outb
 	ret 0, 2, 2
 
-#line:	47
+#line	47
 
   main:
 	' * Parameters
@@ -286,10 +287,10 @@ halt
 	' * int i (offset -2)
 	enter 2
 
-#line:	50
+#line	50
 	call	p
 
-#line:	51
+#line	51
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -297,7 +298,7 @@ halt
 	pushi	0
 	storei
 
-#line:	52
+#line	52
 	' * Assignment
 	pusha	7
 	pushi	2
@@ -305,7 +306,7 @@ halt
 	pushb	48
 	storeb
 
-#line:	53
+#line	53
 	' * Assignment
 	pusha	7
 	pushi	0
@@ -314,7 +315,7 @@ halt
 	b2i
 	storei
 
-#line:	54
+#line	54
 	' * Write
 	push	bp
 	pushi	-2
@@ -332,13 +333,13 @@ halt
 	pushb	10
 	outb
 
-#line:	56
+#line	56
 	pushf	1.3
 	pushi	2
 	call	f
 	popi
 
-#line:	58
+#line	58
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -346,13 +347,13 @@ halt
 	pushi	0
 	storei
 
-#line:	59
+#line	59
 	' * Assignment
 	pusha	4
 	pushi	0
 	storei
 
-#line:	60
+#line	60
 	' * While
  label4:
 	push	bp
@@ -364,7 +365,7 @@ halt
 	jz label5
 	' * Body of the while statement
 
-#line:	61
+#line	61
 	push	bp
 	pushi	-2
 	addi
@@ -374,14 +375,14 @@ halt
 	pushi	1
 	call	fill
 
-#line:	62
+#line	62
 	push	bp
 	pushi	-2
 	addi
 	loadi
 	call	show
 
-#line:	63
+#line	63
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -394,7 +395,7 @@ halt
 	addi
 	storei
 
-#line:	64
+#line	64
 	' * Assignment
 	pusha	4
 	push	bp

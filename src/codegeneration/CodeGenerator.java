@@ -59,7 +59,17 @@ public class CodeGenerator {
     }
 
     public void cast(String suffix1, String suffix2) {
-        printStream.println("\t" + suffix1 + "2" + suffix2);
+        if (suffix1.equals("b") && suffix2.equals("f")) {
+            printStream.println("\tb2i");
+            printStream.println("\ti2f");
+        }
+        else if(suffix1.equals("f") && suffix2.equals("b")){
+            printStream.println("\tf2i");
+            printStream.println("\ti2b");
+        }
+        else {
+            printStream.println("\t" + suffix1 + "2" + suffix2);
+        }
     }
 
     public void load(String suffix) {
@@ -148,10 +158,10 @@ public class CodeGenerator {
     }
 
     public void lineComment(int line) {
-        if(line == currentLine)
+        if (line == currentLine)
             return;
-        currentLine=line;
-        printStream.println("\n#line:\t" + line);
+        currentLine = line;
+        printStream.println("\n#line\t" + line);
     }
 
     public void functionLabel(String name) {
@@ -199,7 +209,7 @@ public class CodeGenerator {
     }
 
     public void sub(String suffix) {
-        printStream.println("\tsub"+suffix);
+        printStream.println("\tsub" + suffix);
     }
 
 

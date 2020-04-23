@@ -10,7 +10,7 @@ call main
 halt
 
 
-#line:	5
+#line	5
 
   main:
 	' * Parameters
@@ -19,13 +19,13 @@ halt
 	' * int i (offset -4)
 	enter 4
 
-#line:	8
+#line	8
 	' * Assignment
 	pusha	0
 	pushb	97
 	storeb
 
-#line:	9
+#line	9
 	' * Write
 	pusha	0
 	loadb
@@ -34,7 +34,7 @@ halt
 	pushb	10
 	outb
 
-#line:	11
+#line	11
 	' * Assignment
 	push	bp
 	pushi	-2
@@ -42,7 +42,7 @@ halt
 	pushi	1
 	storei
 
-#line:	12
+#line	12
 	' * Assignment
 	push	bp
 	pushi	-4
@@ -53,7 +53,7 @@ halt
 	muli
 	storei
 
-#line:	13
+#line	13
 	' * Write
 	push	bp
 	pushi	-2
@@ -73,13 +73,13 @@ halt
 	pushb	10
 	outb
 
-#line:	15
+#line	15
 	' * Read
 	pusha	3
 	inf
 	storef
 
-#line:	16
+#line	16
 	' * Write
 	pushi	2
 	i2f
@@ -91,7 +91,7 @@ halt
 	pushb	10
 	outb
 
-#line:	18
+#line	18
 	' * Write
 	pushi	3
 	i2f
@@ -127,7 +127,7 @@ halt
 	pushb	10
 	outb
 
-#line:	22
+#line	22
 	' * Write
 	pushi	1
 	pushi	2

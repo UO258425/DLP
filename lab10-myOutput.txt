@@ -10,7 +10,7 @@ call main
 halt
 
 
-#line:	8
+#line	8
 
   f:
 	' * Parameters
@@ -21,7 +21,7 @@ halt
 	' * int li (offset -6)
 	enter 6
 
-#line:	11
+#line	11
 	' * Assignment
 	push	bp
 	pushi	-6
@@ -32,7 +32,7 @@ halt
 	loadi
 	storei
 
-#line:	12
+#line	12
 	' * Assignment
 	push	bp
 	pushi	-4
@@ -43,7 +43,7 @@ halt
 	loadf
 	storef
 
-#line:	13
+#line	13
 	' * Return
 	push	bp
 	pushi	8
@@ -51,7 +51,7 @@ halt
 	loadi
 	ret 2, 6, 6
 
-#line:	17
+#line	17
 
   main:
 	' * Parameters
@@ -59,25 +59,25 @@ halt
 	' * record((integer x int)x(character x char)) pair (offset -3)
 	enter 3
 
-#line:	23
+#line	23
 	' * Assignment
 	pusha	0
 	pushi	3
 	storei
 
-#line:	24
+#line	24
 	' * Assignment
 	pusha	6
 	pushb	97
 	storeb
 
-#line:	25
+#line	25
 	' * Assignment
 	pusha	2
 	pushf	3.8
 	storef
 
-#line:	26
+#line	26
 	' * Assignment
 	push	bp
 	pushi	-3
@@ -88,7 +88,7 @@ halt
 	loadi
 	storei
 
-#line:	27
+#line	27
 	' * Assignment
 	push	bp
 	pushi	-3
@@ -99,7 +99,7 @@ halt
 	loadb
 	storeb
 
-#line:	28
+#line	28
 	pusha	0
 	loadi
 	pusha	2
