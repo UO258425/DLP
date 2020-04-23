@@ -225,10 +225,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
     */
     @Override
     public Void visit(While aWhile, int[] param) {
+        cg.comment("While");
         int labelNumber = cg.getLabels(2);
         cg.label(labelNumber);
         aWhile.getCondition().accept(valueCGVisitor, null);
         cg.jz(labelNumber + 1);
+        cg.comment("Body of the while statement");
         aWhile.getBody().forEach(st -> {
             if (!(st instanceof VariableDefinition))
                 cg.lineComment(st.getLine());
@@ -252,9 +254,11 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
     */
     @Override
     public Void visit(IfElse ifElse, int[] param) {
+        cg.comment("If statement");
         int labelNumber = cg.getLabels(2);
         ifElse.getCondition().accept(valueCGVisitor, null);
         cg.jz(labelNumber);
+        cg.comment("Body of the if branch");
         ifElse.getIfBody().forEach(st -> {
             if (!(st instanceof VariableDefinition))
                 cg.lineComment(st.getLine());
@@ -262,6 +266,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
         });
         cg.jmp(labelNumber + 1);
         cg.label(labelNumber);
+        cg.comment("Body of the else branch");
         ifElse.getElseBody().forEach(st -> {
             if (!(st instanceof VariableDefinition))
                 cg.lineComment(st.getLine());
