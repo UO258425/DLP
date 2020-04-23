@@ -144,19 +144,22 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
                 st.accept(this, param);
 
         int bytesLocalVariables = getBytesLocalVariables(functionDefinition.getStatements());
+        int bytesParameters = getBytesParameters(functionType.getParameters());
+
         cg.enter(bytesLocalVariables);
+
+        int[] retParams={};
+        if(!(functionType.getReturnType() instanceof VoidType))
+            retParams = new int[]{functionType.getReturnType().getNumberOfBytes(), bytesLocalVariables, bytesParameters};
+
         for (Statement st : functionDefinition.getStatements()) {
             if (!(st instanceof VariableDefinition)) {
                 cg.lineComment(st.getLine());
-                st.accept(this, param);
+                st.accept(this, retParams);
             }
         }
-
-        int bytesParameters = getBytesParameters(functionType.getParameters());
         if (functionType.getReturnType() instanceof VoidType)
             cg.ret(0, bytesLocalVariables, bytesParameters);
-
-
         return null;
     }
 
@@ -204,8 +207,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
     */
     @Override
     public Void visit(Return aReturn, int[] param) {
+        cg.comment("Return");
         aReturn.getReturned().accept(valueCGVisitor, null);
-        cg.ret(param[1], param[2], param[3]);
+        cg.ret(param[0], param[1], param[2]);
         return null;
     }
 

@@ -29,11 +29,11 @@ public class CodeGenerator {
     }
 
     public void push(String suffix, double value) {
-        printStream.println("\tpush" + suffix + " " + value);
+        printStream.println("\tpush" + suffix + "\t" + value);
     }
 
     public void push(String suffix, int value) {
-        printStream.println("\tpush" + suffix + " " + value);
+        printStream.println("\tpush" + suffix + "\t" + value);
     }
 
     public void arithmetic(String operation, String suffix) {
@@ -105,11 +105,11 @@ public class CodeGenerator {
     }
 
     public void pusha(int offset) {
-        printStream.println("\tpusha " + offset);
+        printStream.println("\tpusha\t" + offset);
     }
 
     public void pushbp() {
-        printStream.println("\tpush bp");
+        printStream.println("\tpush\tbp");
     }
 
     public void addi() {
@@ -117,7 +117,7 @@ public class CodeGenerator {
     }
 
     public void pushi(int offset) {
-        printStream.println("\tpushi " + offset);
+        printStream.println("\tpushi\t" + offset);
     }
 
     public void in(String suffix) {
@@ -155,7 +155,7 @@ public class CodeGenerator {
     }
 
     public void functionLabel(String name) {
-        printStream.println("  " + name + ":");
+        printStream.println("\n  " + name + ":");
     }
 
     public void comment(String comment) {
@@ -187,7 +187,7 @@ public class CodeGenerator {
     }
 
     public void call(String name) {
-        printStream.println("\tcall " + name);
+        printStream.println("\tcall\t" + name);
     }
 
     public void pop(String suffix) {
