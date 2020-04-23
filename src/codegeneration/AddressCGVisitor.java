@@ -1,28 +1,36 @@
 package codegeneration;
 
 
+import ast.expression.ArrayIndexing;
+import ast.expression.FieldAccess;
 import ast.expression.Variable;
 import ast.program.VariableDefinition;
+import ast.type.RecordType;
 
 public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
 
     private CodeGenerator cg;
 
+    private ValueCGVisitor valueCGVisitor;
+
     public AddressCGVisitor(CodeGenerator cg) {
         this.cg = cg;
     }
 
+    public void setValueCGVisitor(ValueCGVisitor valueCGVisitor) {
+        this.valueCGVisitor = valueCGVisitor;
+    }
 
     /*
-    address[[Variable: expression -> ID]] =
-        if(expression.definition.scope == 0)
-            <pusha> expression.definition.offset
-         else{
-            <push bp>
-            <pushi> expression.definition.offset
-            <addi>
-        }
-    */
+        address[[Variable: expression -> ID]] =
+            if(expression.definition.scope == 0)
+                <pusha> expression.definition.offset
+             else{
+                <push bp>
+                <pushi> expression.definition.offset
+                <addi>
+            }
+        */
     @Override
     public Void visit(Variable variable, Void param) {
         if (variable.getDefinition().getScope() == 0) {
@@ -41,7 +49,14 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         <pushi > expression2.type.getField(ID)
         <addi>
      */
-
+    @Override
+    public Void visit(FieldAccess fieldAccess, Void param){
+        fieldAccess.getExpression().accept(this, param);
+        RecordType recordType = (RecordType) fieldAccess.getType();
+        cg.pushi(recordType.getField(fieldAccess.getFieldName()).getOffset());
+        cg.addi();
+        return null;
+    }
 
 
 
@@ -53,5 +68,13 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void> {
         <muli>
         <addi>
     */
-
+    @Override
+    public Void visit(ArrayIndexing arrayIndexing, Void param){
+        arrayIndexing.getVariable().accept(this, param);
+        arrayIndexing.getIndex().accept(valueCGVisitor, param);
+        cg.pushi(arrayIndexing.getType().getNumberOfBytes());
+        cg.muli();
+        cg.addi();
+        return null;
+    }
 }

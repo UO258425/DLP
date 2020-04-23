@@ -12,7 +12,7 @@ public class IntegerType extends AbstractType {
 
     @Override
     public String toString() {
-        return "integer";
+        return "int";
     }
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
@@ -39,6 +39,15 @@ public class IntegerType extends AbstractType {
     }
 
     @Override
+    public Type comparison(Type t) {
+        if (t instanceof IntegerType)
+            return this;
+        else if (t instanceof ErrorType)
+            return t;
+        return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for comparison operation");
+    }
+
+    @Override
     public Type unaryMinus(UnaryMinus t) {
         return this;
     }
@@ -50,7 +59,11 @@ public class IntegerType extends AbstractType {
 
     @Override
     public Type cast(Type t) {
-        return t;
+        if(t instanceof IntegerType || t instanceof DoubleType || t instanceof  CharacterType)
+            return t;
+        else if(t instanceof ErrorType)
+            return t;
+        return new ErrorType(getLine(), getColumn(), "Can't perform cast from int to "+t);
     }
 
     @Override
@@ -66,6 +79,11 @@ public class IntegerType extends AbstractType {
     @Override
     public String getSuffix() {
         return "i";
+    }
+
+    @Override
+    public boolean isBoolean(){
+        return true;
     }
 
 }

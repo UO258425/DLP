@@ -2,7 +2,7 @@ package ast.type;
 
 import visitor.Visitor;
 
-public class CharacterType extends AbstractType{
+public class CharacterType extends AbstractType {
 
     public CharacterType(int line, int column) {
         super(line, column);
@@ -10,7 +10,7 @@ public class CharacterType extends AbstractType{
 
     @Override
     public String toString() {
-        return "character";
+        return "char";
     }
 
     @Override
@@ -20,9 +20,9 @@ public class CharacterType extends AbstractType{
 
     @Override
     public Type arithmetic(Type t) {
-        if(t instanceof DoubleType)
+        if (t instanceof CharacterType)
             return this;
-        else if(t instanceof ErrorType)
+        else if (t instanceof ErrorType)
             return t;
         else
             return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for arithmetic operation");
@@ -30,22 +30,34 @@ public class CharacterType extends AbstractType{
 
     @Override
     public Type logical(Type t) {
-        if(t instanceof CharacterType)
+        if (t instanceof CharacterType)
             return new IntegerType(t.getLine(), t.getColumn());
         else if (t instanceof ErrorType)
             return t;
-        return new ErrorType(t.getLine(),t.getColumn(), "Incompatible types for logical operation");
+        return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for logical operation");
+    }
+
+    @Override
+    public Type comparison(Type t) {
+        if (t instanceof CharacterType)
+            return new IntegerType(this.getLine(), this.getColumn());
+        else if (t instanceof ErrorType)
+            return t;
+        return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for comparison operation");
     }
 
     @Override
     public boolean equivalent(Type t) {
         return t instanceof CharacterType;
-
     }
 
     @Override
     public Type cast(Type t) {
-        return t;
+        if (t instanceof CharacterType || t instanceof IntegerType || t instanceof DoubleType)
+            return t;
+        else if (t instanceof ErrorType)
+            return t;
+        return new ErrorType(t.getLine(), t.getColumn(), "Can't perform a cast from char to "+t.toString());
     }
 
     @Override

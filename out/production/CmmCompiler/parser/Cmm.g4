@@ -87,7 +87,7 @@ expression returns [Expression ast]:
                 { $ast = new ArithmeticExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
                                                   $op.text, $exp1.ast, $exp2.ast);}
           | exp1=expression op=('>'|'>='|'<'|'<='|'!='|'==') exp2=expression
-                { $ast = new LogicalExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
+                { $ast = new ComparisonExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
                                                $op.text, $exp1.ast, $exp2.ast);}
           | exp1=expression op=('&&'|'||') exp2=expression
                 { $ast = new LogicalExpression($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,

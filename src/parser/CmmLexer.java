@@ -1,13 +1,24 @@
-// Generated from C:/Users/Carlos Manrique/IdeaProjects/DLP/src/parser\Cmm.g4 by ANTLR 4.8
+// Generated from C:/Users/Carlos Manrique/IdeaProjects/CmmCompiler/src/parser\Cmm.g4 by ANTLR 4.8
 package parser;
 
 
+import ast.*;
+import ast.expression.*;
+import ast.program.*;
+import ast.statement.*;
+import ast.type.*;
+import java.util.*;
+import parser.*;
+
+
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.LexerATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CmmLexer extends Lexer {

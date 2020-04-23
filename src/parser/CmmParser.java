@@ -1,24 +1,24 @@
-// Generated from C:/Users/Carlos Manrique/IdeaProjects/DLP/src/parser\Cmm.g4 by ANTLR 4.8
+// Generated from C:/Users/Carlos Manrique/IdeaProjects/CmmCompiler/src/parser\Cmm.g4 by ANTLR 4.8
 package parser;
 
 
+import ast.*;
 import ast.expression.*;
-import ast.program.Definition;
-import ast.program.FunctionDefinition;
-import ast.program.Program;
-import ast.program.VariableDefinition;
+import ast.program.*;
 import ast.statement.*;
 import ast.type.*;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
-import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import java.util.*;
+import parser.*;
 
-import java.util.ArrayList;
+
+import org.antlr.v4.runtime.atn.*;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CmmParser extends Parser {
@@ -795,7 +795,7 @@ public class CmmParser extends Parser {
 						}
 						setState(162);
 						((ExpressionContext)_localctx).exp2 = ((ExpressionContext)_localctx).expression = expression(8);
-						 ((ExpressionContext)_localctx).ast =  new LogicalExpression((((ExpressionContext)_localctx).exp1!=null?(((ExpressionContext)_localctx).exp1.start):null).getLine(), (((ExpressionContext)_localctx).exp1!=null?(((ExpressionContext)_localctx).exp1.start):null).getCharPositionInLine()+1,
+						 ((ExpressionContext)_localctx).ast =  new ComparisonExpression((((ExpressionContext)_localctx).exp1!=null?(((ExpressionContext)_localctx).exp1.start):null).getLine(), (((ExpressionContext)_localctx).exp1!=null?(((ExpressionContext)_localctx).exp1.start):null).getCharPositionInLine()+1,
 						                                                         (((ExpressionContext)_localctx).op!=null?((ExpressionContext)_localctx).op.getText():null), ((ExpressionContext)_localctx).exp1.ast, ((ExpressionContext)_localctx).exp2.ast);
 						}
 						break;

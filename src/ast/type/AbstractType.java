@@ -40,6 +40,10 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
         return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for logical operation");
     }
 
+    public Type comparison(Type t) {
+        return new ErrorType(t.getLine(), t.getColumn(), "Incompatible types for comparison operation");
+    }
+
     public Type unaryMinus(UnaryMinus t) {
         return new ErrorType(t.getLine(), t.getColumn(), "Cant perform minus operation");
     }

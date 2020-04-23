@@ -11,7 +11,7 @@ public class DoubleType extends AbstractType {
 
     @Override
     public String toString() {
-        return "double";
+        return "real";
     }
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP param) {
@@ -29,12 +29,12 @@ public class DoubleType extends AbstractType {
     }
 
     @Override
-    public Type logical(Type t) {
+    public Type comparison(Type t) {
         if(t instanceof DoubleType)
             return new IntegerType(t.getLine(), t.getColumn());
         else if (t instanceof ErrorType)
             return t;
-        return new ErrorType(t.getLine(),t.getColumn(), "Incompatible types for logical operation");
+        return new ErrorType(t.getLine(),t.getColumn(), "Incompatible types for comparison operation");
     }
 
     @Override
@@ -44,7 +44,13 @@ public class DoubleType extends AbstractType {
 
     @Override
     public Type cast(Type t) {
-        return t;
+
+        if (t instanceof CharacterType || t instanceof IntegerType || t instanceof DoubleType)
+            return t;
+        else if (t instanceof ErrorType)
+            return t;
+        return new ErrorType(t.getLine(), t.getColumn(), "Can't perform a cast from double to "+t.toString());
+
     }
 
     @Override

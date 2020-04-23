@@ -69,4 +69,11 @@ public class RecordType extends AbstractType {
         }
         return total;
     }
+
+    public RecordField getField(String fieldName) {
+        return fields.stream()
+                .filter(f -> f.getName().equals(fieldName))
+                .findFirst()
+                .get();
+    }
 }

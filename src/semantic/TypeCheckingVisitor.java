@@ -170,7 +170,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
     public Void visit(Cast cast, Type param) {
         cast.getExpression().accept(this, param);
-        cast.getType().accept(this, param);
+        cast.getCastType().accept(this, param);
         cast.setLvalue(false);
         cast.setType(cast.getExpression().getType().cast(cast.getCastType()));
         return null;
@@ -204,6 +204,19 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 
     /*
      * comparison: exp1 -> exp2 (&& | || ) exp3
+     * exp1.type = exp2.type.comparison(expression3.type, exp1)
+     */
+    @Override
+    public Void visit(ComparisonExpression comparisonExpression, Type param){
+        comparisonExpression.getLeft().accept(this, param);
+        comparisonExpression.getRight().accept(this, param);
+        comparisonExpression.setLvalue(false);
+        comparisonExpression.setType(comparisonExpression.getLeft().getType().comparison(comparisonExpression.getRight().getType()));
+        return null;
+    }
+
+    /*
+     * logical: exp1 -> exp2 (> | >= | < | <= | != | == ) exp3
      * exp1.type = exp2.type.comparison(expression3.type, exp1)
      */
     @Override

@@ -12,7 +12,7 @@ public class CodeGenerator {
 
     private PrintStream printStream;
 
-    public CodeGenerator()  {
+    public CodeGenerator() {
         this.printStream = new PrintStream(System.out);
     }
 
@@ -23,11 +23,15 @@ public class CodeGenerator {
 
     public int getLabels(int i) {
         int tmp = labels;
-        labels+=i;
+        labels += i;
         return tmp;
     }
 
     public void push(String suffix, double value) {
+        printStream.println("\tpush" + suffix + " " + value);
+    }
+
+    public void push(String suffix, int value) {
         printStream.println("\tpush" + suffix + " " + value);
     }
 
@@ -49,19 +53,19 @@ public class CodeGenerator {
                 printStream.println("\tmod" + suffix);
                 break;
             default:
-                throw new IllegalStateException("That operation ("+operation+") is not supported for arithmetic");
+                throw new IllegalStateException("That operation (" + operation + ") is not supported for arithmetic");
         }
     }
 
     public void cast(String suffix1, String suffix2) {
-        printStream.println("\t"+suffix1+"2"+suffix2);
+        printStream.println("\t" + suffix1 + "2" + suffix2);
     }
 
     public void load(String suffix) {
-        printStream.println("\tload"+suffix);
+        printStream.println("\tload" + suffix);
     }
 
-    public void logical(String operation, String suffix) {
+    public void comparison(String operation, String suffix) {
         switch (operation) {
             case ">":
                 printStream.println("\tgt" + suffix);
@@ -81,6 +85,13 @@ public class CodeGenerator {
             case "==":
                 printStream.println("\teq" + suffix);
                 break;
+            default:
+                throw new IllegalStateException("That operation (" + operation + ")is not supported for comparison operation");
+        }
+    }
+
+    public void logical(String operation, String suffix) {
+        switch (operation) {
             case "&&":
                 printStream.println("\tand");
                 break;
@@ -88,12 +99,12 @@ public class CodeGenerator {
                 printStream.println("\tor");
                 break;
             default:
-                throw new IllegalStateException("That operation ("+operation+")is not supported for logical operation");
+                throw new IllegalStateException("That operation (" + operation + ")is not supported for logical operation");
         }
     }
 
     public void pusha(int offset) {
-        printStream.println("\tpusha "+offset);
+        printStream.println("\tpusha " + offset);
     }
 
     public void pushbp() {
@@ -109,20 +120,20 @@ public class CodeGenerator {
     }
 
     public void in(String suffix) {
-        printStream.println("\tin"+suffix);
+        printStream.println("\tin" + suffix);
     }
 
     public void store(String suffix) {
-        printStream.println("\tstore"+suffix);
+        printStream.println("\tstore" + suffix);
     }
 
     public void out(String suffix) {
-        printStream.println("\tout"+suffix);
+        printStream.println("\tout" + suffix);
 
     }
 
     public void commentVariable(Type type, String name, int offset) {
-        printStream.println("\t' * "+ type + " " + name + " (offset "+ offset + ")");
+        printStream.println("\t' * " + type + " " + name + " (offset " + offset + ")");
     }
 
     public void mainInvocation() {
@@ -132,39 +143,60 @@ public class CodeGenerator {
     }
 
     public void sourceComment(String inputFileName) {
-        printStream.println("\n#source \""+inputFileName+"\"\n");
+        printStream.println("\n#source \"" + inputFileName + "\"\n");
     }
 
     public void lineComment(int line) {
-        printStream.println("#line:\t"+line);
+        printStream.println("#line:\t" + line);
     }
 
     public void functionLabel(String name) {
-        printStream.println("  "+name+":");
+        printStream.println("  " + name + ":");
     }
 
-    public void comment(String comment){
-        printStream.println("\t' * "+comment);
+    public void comment(String comment) {
+        printStream.println("\t' * " + comment);
     }
 
     public void enter(int number) {
-        printStream.println("\tenter "+number);
+        printStream.println("\tenter " + number);
     }
 
     public void ret(int bytesReturn, int bytesLocalVariables, int bytesParameters) {
-        printStream.println("\tret "+bytesReturn+", "+bytesLocalVariables+", "+bytesParameters);
+        printStream.println("\tret " + bytesReturn + ", " + bytesLocalVariables + ", " + bytesParameters);
     }
 
     public void label(int labelNumber) {
-        printStream.println(" label"+labelNumber+":");
+        printStream.println(" label" + labelNumber + ":");
     }
 
     public void jz(int i) {
-        printStream.println("\tjz label"+i);
+        printStream.println("\tjz label" + i);
     }
 
     public void jmp(int labelNumber) {
-        printStream.println("\tjmp label"+labelNumber);
+        printStream.println("\tjmp label" + labelNumber);
     }
+
+    public void muli() {
+        printStream.println("\tmuli");
+    }
+
+    public void call(String name) {
+        printStream.println("\tcall " + name);
+    }
+
+    public void pop(String suffix) {
+        printStream.println("\tpop" + suffix);
+    }
+
+    public void not() {
+        printStream.println("\tnot");
+    }
+
+    public void sub(String suffix) {
+        printStream.println("\tsub"+suffix);
+    }
+
 
 }

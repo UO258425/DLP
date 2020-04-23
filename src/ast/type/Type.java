@@ -18,6 +18,7 @@ public interface Type extends ASTNode {
     Type squareBrackets(Type type);
     Type parenthesis(Type[] parameterTypes, FunctionInvocation functionInvocation);
     Type logical(Type type);
+    Type comparison(Type type);
     Type unaryMinus(UnaryMinus unaryMinus);
     Type unaryNot(UnaryNot unaryNot);
     Type dot(String id, FieldAccess fieldAccess);

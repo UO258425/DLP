@@ -95,6 +95,11 @@ public class AbstractCGVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
+    public TR visit(ComparisonExpression comparisonExpression, TP param) {
+        throw new IllegalStateException(comparisonExpression.getClass().getName()+" not implemented for " + this.getClass().getName());
+    }
+
+    @Override
     public TR visit(UnaryMinus unaryMinus, TP param) {
         throw new IllegalStateException(unaryMinus.getClass().getName()+" not implemented for " + this.getClass().getName());
     }

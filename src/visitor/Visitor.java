@@ -31,6 +31,7 @@ public interface Visitor<TP,TR>{
     TR visit(UnaryNot unaryNot, TP param);
     TR visit(Variable variable, TP param);
     TR visit(IntegerLiteral integerLiteral, TP param);
+    TR visit(ComparisonExpression comparisonExpression, TP param);
 
     TR visit(ArrayType arrayType, TP param);
     TR visit(CharacterType characterType, TP param);

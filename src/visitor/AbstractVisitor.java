@@ -92,8 +92,8 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR> {
 
     @Override
     public TR visit(Cast cast, TP param) {
+        cast.getCastType().accept(this, null);
         cast.getExpression().accept(this, null);
-        cast.getType().accept(this, null);
         return null;
     }
 
@@ -117,6 +117,13 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR> {
     public TR visit(LogicalExpression logicalExpression, TP param) {
         logicalExpression.getLeft().accept(this, null);
         logicalExpression.getRight().accept(this, null);
+        return null;
+    }
+
+    @Override
+    public TR visit(ComparisonExpression comparisonExpression, TP param) {
+        comparisonExpression.getLeft().accept(this, null);
+        comparisonExpression.getRight().accept(this, null);
         return null;
     }
 

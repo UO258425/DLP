@@ -28,7 +28,6 @@ public class Main {
 		CmmParser parser = new CmmParser(tokens);	
 		Program ast = parser.program().ast;
 
-
 		//Semantic phase
 		IdentificationVisitor identificationVisitor = new IdentificationVisitor();
 		identificationVisitor.visit(ast, null);
@@ -41,7 +40,7 @@ public class Main {
 		offsetVisitor.visit(ast, null);
 
 		String outputFileName = "outputProgam.txt";
-		CodeGenerator codeGenerator = new CodeGenerator();
+		CodeGenerator codeGenerator = new CodeGenerator(outputFileName);
 		codeGenerator.sourceComment(args[0]);
 
 		ExecuteCGVisitor executeCGVisitor = new ExecuteCGVisitor(codeGenerator);
@@ -51,6 +50,7 @@ public class Main {
 		valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
 		executeCGVisitor.setAddressCGVisitor(addressCGVisitor);
 		executeCGVisitor.setValueCGVisitor(valueCGVisitor);
+		addressCGVisitor.setValueCGVisitor(valueCGVisitor);
 
 		executeCGVisitor.visit(ast, null);
 
