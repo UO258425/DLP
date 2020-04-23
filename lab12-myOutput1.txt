@@ -1,0 +1,26 @@
+
+#source "lab12-input1.txt"
+
+	' * ArrayType{type=real, size=10} v (offset 0)
+
+' Invocation to the main function
+call main
+halt
+
+
+#line:	4
+  main:
+	' * Parameters
+	' * Local variables
+	' * real value (offset -4)
+	' * int i (offset -6)
+	' * int j (offset -8)
+	' * ArrayType{type=ArrayType{type=int, size=5}, size=4} w (offset -48)
+	' * RecordType{fields=[RecordField{name='day', type=int}, RecordField{name='month', type=int}, RecordField{name='year', type=int}]} date (offset -54)
+	enter 54
+
+#line:	13
+	' * Read
+	push bp
+	pushi -54
+	addi

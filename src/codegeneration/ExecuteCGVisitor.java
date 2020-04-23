@@ -55,7 +55,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
     public Void visit(Write write, int[] param) {
         cg.comment("Write");
         write.getExpression().accept(valueCGVisitor, null);
-        cg.load(write.getExpression().getType().getSuffix());
+        //cg.load(write.getExpression().getType().getSuffix());
         cg.out(write.getExpression().getType().getSuffix());
         return null;
     }
@@ -136,7 +136,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
 
         cg.comment("Parameters");
         FunctionType functionType = (FunctionType) functionDefinition.getType();
-        functionType.accept(this, null);
+        functionType.accept(this, param);
 
         cg.comment("Local variables");
         for (Statement st : functionDefinition.getStatements())

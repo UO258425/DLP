@@ -1,0 +1,104 @@
+
+#source "lab12-input3.txt"
+
+	' * RecordType{fields=[RecordField{name='integer', type=int}, RecordField{name='character', type=char}]} pair (offset 0)
+	' * ArrayType{type=RecordType{fields=[RecordField{name='employees', type=ArrayType{type=RecordType{fields=[RecordField{name='age', type=int}]}, size=2}}]}, size=2} acme (offset 3)
+	' * ArrayType{type=ArrayType{type=int, size=3}, size=8} fibonacci (offset 11)
+
+' Invocation to the main function
+call main
+halt
+
+
+#line:	14
+  p:
+	' * Parameters
+	' * Local variables
+	enter 0
+	ret 0, 0, 0
+
+#line:	16
+  f:
+	' * Parameters
+	' * real r (offset 6)
+	' * int e (offset 4)
+	' * Local variables
+	' * real real (offset -4)
+	' * char c (offset -5)
+	' * int result (offset -7)
+	enter 7
+
+#line:	20
+	' * Assignment
+	push bp
+	pushi -4
+	addi
+	push bp
+	pushi 6
+	addi
+	loadf
+	pushf 10.0
+	mulf
+	storef
+
+#line:	21
+	' * Assignment
+	push bp
+	pushi -5
+	addi
+	pushb 48
+	storeb
+
+#line:	22
+	push bp
+	pushi 4
+	addi
+	loadi
+	pushi 256
+	lti
+	jz label0
+
+#line:	23
+	' * Assignment
+	push bp
+	pushi -5
+	addi
+	push bp
+	pushi 4
+	addi
+	loadi
+	i2b
+	storeb
+
+#line:	24
+	' * Assignment
+	push bp
+	pushi -7
+	addi
+	push bp
+	pushi -5
+	addi
+	loadb
+	b2i
+	storei
+	jmp label1
+ label0:
+
+#line:	27
+	' * Assignment
+	push bp
+	pushi -7
+	addi
+	push bp
+	pushi -4
+	addi
+	loadf
+	f2i
+	storei
+ label1:
+
+#line:	28
+	push bp
+	pushi -7
+	addi
+	loadi

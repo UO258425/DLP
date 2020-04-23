@@ -14,8 +14,8 @@ import semantic.TypeCheckingVisitor;
 public class Main {
 	
 	public static void main(String... args) throws Exception {
-		   if (args.length<1) {
-		        System.err.println("Please, pass me the input file.");
+		   if (args.length<2) {
+		        System.err.println("Please, pass me the input file and the output file.");
 		        return;
 		    }
 		   		 			
@@ -39,7 +39,7 @@ public class Main {
 		OffsetVisitor offsetVisitor = new OffsetVisitor();
 		offsetVisitor.visit(ast, null);
 
-		String outputFileName = "outputProgam.txt";
+		String outputFileName = args[1];
 		CodeGenerator codeGenerator = new CodeGenerator(outputFileName);
 		codeGenerator.sourceComment(args[0]);
 

@@ -28,9 +28,16 @@ public class RecordType extends AbstractType {
 
     @Override
     public String toString() {
-        return "RecordType{" +
-                "fields=" + fields +
-                '}';
+        StringBuilder str = new StringBuilder();
+        str.append("record(");
+        for(RecordField rf : fields){
+            str.append("("+rf.getName()+" x "+rf.getType()+")x");
+        }
+
+
+        str.delete(str.length()-1,str.length());
+        str.append(")");
+        return str.toString();
     }
 
 

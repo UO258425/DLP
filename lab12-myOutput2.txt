@@ -1,0 +1,38 @@
+
+#source "lab12-input2.txt"
+
+	' * int i (offset 0)
+	' * int n (offset 2)
+	' * int j (offset 4)
+	' * char c (offset 6)
+	' * record((integer x int)x(character x char)) pair (offset 7)
+	' * ArrayType{type=ArrayType{type=int, size=10}, size=10} matrix (offset 10)
+
+' Invocation to the main function
+call main
+halt
+
+
+#line:	12
+  p:
+	' * Parameters
+	' * Local variables
+	enter 0
+	ret 0, 0, 0
+
+#line:	14
+  f:
+	' * Parameters
+	' * real r (offset 6)
+	' * int e (offset 4)
+	' * Local variables
+	' * real real (offset -4)
+	' * char c (offset -5)
+	enter 5
+
+#line:	17
+	' * Assignment
+	push bp
+	pushi -4
+	addi
+	pusha 7

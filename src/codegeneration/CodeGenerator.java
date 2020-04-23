@@ -8,6 +8,7 @@ import java.io.PrintStream;
 
 public class CodeGenerator {
 
+    private int currentLine = -1;
     private int labels = 0;
 
     private PrintStream printStream;
@@ -139,7 +140,7 @@ public class CodeGenerator {
     public void mainInvocation() {
         printStream.println("\n' Invocation to the main function");
         printStream.println("call main");
-        printStream.println("halt");
+        printStream.println("halt\n");
     }
 
     public void sourceComment(String inputFileName) {
@@ -147,7 +148,10 @@ public class CodeGenerator {
     }
 
     public void lineComment(int line) {
-        printStream.println("#line:\t" + line);
+        if(line == currentLine)
+            return;
+        currentLine=line;
+        printStream.println("\n#line:\t" + line);
     }
 
     public void functionLabel(String name) {
