@@ -86,4 +86,6 @@ public class IntegerType extends AbstractType {
         return true;
     }
 
+    @Override
+    public boolean isWritable(){ return true;}
 }

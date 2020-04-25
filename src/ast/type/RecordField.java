@@ -54,4 +54,5 @@ public class RecordField extends AbstractASTNode {
     public int getNumberOfBytes() {
         return type.getNumberOfBytes();
     }
+
 }

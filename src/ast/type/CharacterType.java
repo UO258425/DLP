@@ -69,4 +69,7 @@ public class CharacterType extends AbstractType {
     public String getSuffix() {
         return "b";
     }
+
+    @Override
+    public boolean isWritable(){ return true;}
 }

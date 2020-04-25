@@ -35,6 +35,11 @@ public class Main {
 		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
 		typeCheckingVisitor.visit(ast, null);
 
+		if(ErrorHandler.getInstance().anyError()) {
+			ErrorHandler.getInstance().showErrors(System.err);
+			//Cant compile if there are errors
+			System.exit(-1);
+		}
 		//Code generation phase
 		OffsetVisitor offsetVisitor = new OffsetVisitor();
 		offsetVisitor.visit(ast, null);

@@ -10,6 +10,7 @@ public interface Type extends ASTNode {
 
     boolean isBoolean();
     boolean equivalent(Type type);
+    boolean isWritable();
 
     int getNumberOfBytes();
 

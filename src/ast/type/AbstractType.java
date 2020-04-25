@@ -15,6 +15,8 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
         return false;
     }
 
+    public boolean isWritable(){ return false;}
+
     public boolean equivalent(Type t) {
         return false;
     }

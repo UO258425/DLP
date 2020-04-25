@@ -135,6 +135,9 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     public Void visit(Write write, Type param) {
         write.getExpression().accept(this, param);
         write.setLvalue(false);
+        if(!write.getExpression().getType().isWritable())
+            new ErrorType(write.getExpression().getLine(), write.getExpression().getColumn(),
+                    "Error: Trying to write a non writable type");
         return null;
     }
 

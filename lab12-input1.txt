@@ -9,7 +9,7 @@ void main() {
 		int day;
 		int month, year;
 	} date;
-	
+
 	read date.day; // * lvalue
 	date.year = (int)'a'; 
 	date.month = date.day*date.year%12+1;

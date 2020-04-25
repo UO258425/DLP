@@ -69,4 +69,7 @@ public class DoubleType extends AbstractType {
         return "f";
     }
 
+    @Override
+    public boolean isWritable(){ return true;}
+
 }

@@ -103,7 +103,8 @@ halt
 	outb
 	' * Write
 	pushb	48
-	b2f
+	b2i
+	i2f
 	pushf	48.0
 	divf
 	outf
