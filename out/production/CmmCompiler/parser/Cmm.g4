@@ -110,8 +110,17 @@ expression returns [Expression ast]:
 
 
 statement returns [List<Statement> ast = new ArrayList<Statement>()]
-          locals [IfElse ifelse = new IfElse(0,0)]:
-           exp1=expression '=' exp2=expression ';'
+          locals [IfElse ifelse = new IfElse(0,0), MultipleAssignment ma = new MultipleAssignment(0,0)]:
+            exp1=expression { $ma.setLine($exp1.start.getLine()); $ma.setColumn($exp1.start.getCharPositionInLine()+1);
+                              $ma.addLeft($exp1.ast);}
+                (',' exp2=expression {$ma.addLeft($exp2.ast);})*
+                '='
+             exp3=expression {$ma.addRight($exp3.ast);}
+                (',' exp4=expression {$ma.addRight($exp4.ast);})*
+                ';'
+             { $ast.add($ma);}
+
+         | exp1=expression '=' exp2=expression ';'
                 { $ast.add(new Assignment($exp1.start.getLine(), $exp1.start.getCharPositionInLine()+1,
                                 $exp1.ast, $exp2.ast));}
 

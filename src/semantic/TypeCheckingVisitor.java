@@ -8,6 +8,8 @@ import ast.statement.*;
 import ast.type.*;
 import visitor.AbstractVisitor;
 
+import java.util.List;
+
 public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
     public Void visit(Program program, Type param) {
@@ -57,6 +59,38 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
             if (!assignment.getLeft().getType().equivalent(assignment.getRight().getType()))
                 new ErrorType(assignment.getLine(), assignment.getColumn(), "Not equivalent types, trying to assign " +
                         assignment.getRight().getType() + " to " + assignment.getLeft().getType());
+        }
+
+        return null;
+    }
+
+    @Override
+    public Void visit(MultipleAssignment multipleAssignment, Type param){
+        multipleAssignment.getLefts().forEach(e -> e.accept(this, param));
+
+        multipleAssignment.getLefts().forEach(e ->{
+            if(!e.isLvalue())
+                new ErrorType(e.getLine(), e.getColumn(), "lvalue expected");
+        });
+
+        multipleAssignment.getRights().forEach(e -> e.accept(this, param));
+        multipleAssignment.setLvalue(false);
+
+        if(multipleAssignment.getLefts().size() != multipleAssignment.getRights().size()) {
+            new ErrorType(multipleAssignment.getLine(), multipleAssignment.getColumn(), "There must be the same number of expression in both sides");
+            return null;
+        }
+
+        List<Expression> lefts = multipleAssignment.getLefts();
+        List<Expression> rights = multipleAssignment.getRights();
+
+        for(int i = 0;i<lefts.size();i++){
+            if(!(lefts.get(i).getType() instanceof ErrorType) && !(rights.get(i).getType() instanceof  ErrorType)){
+                if(!lefts.get(i).getType().equivalent(rights.get(i).getType()))
+                    new ErrorType(rights.get(i).getLine(), rights.get(i).getColumn(), "Not equivalent types, trying to assign "+
+                     rights.get(i).getType() +" to "+ lefts.get(i).getType());
+            }
+
         }
 
         return null;

@@ -12,6 +12,7 @@ public interface Visitor<TP,TR>{
     TR visit(VariableDefinition variableDefinition, TP param);
     TR visit(FunctionDefinition functionDefinition, TP param);
 
+    TR visit(MultipleAssignment multipleAssignment, TP param);
     TR visit(Assignment assignment, TP param);
     TR visit(FunctionInvocation functionInvocation, TP param);
     TR visit(IfElse ifElse, TP param);

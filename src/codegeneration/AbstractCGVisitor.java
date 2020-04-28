@@ -30,6 +30,11 @@ public class AbstractCGVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
+    public TR visit(MultipleAssignment multipleAssignment, TP param){
+        throw new IllegalStateException(multipleAssignment.getClass().getName()+" not implemented for " + this.getClass().getName());
+    }
+
+    @Override
     public TR visit(FunctionInvocation functionInvocation, TP param) {
         throw new IllegalStateException(functionInvocation.getClass().getName()+" not implemented for " + this.getClass().getName());
     }

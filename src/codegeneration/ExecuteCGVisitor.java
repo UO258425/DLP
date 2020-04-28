@@ -1,5 +1,6 @@
 package codegeneration;
 
+import ast.expression.Expression;
 import ast.program.Definition;
 import ast.program.FunctionDefinition;
 import ast.program.Program;
@@ -44,6 +45,22 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
 
         return null;
     }
+
+    @Override
+    public Void visit(MultipleAssignment multipleAssignment, int[] param){
+        List<Expression> lefts = multipleAssignment.getLefts();
+        List<Expression> rights = multipleAssignment.getRights();
+
+        for(int i = 0;i<lefts.size();i++){
+            cg.comment("Assignment");
+            lefts.get(i).accept(addressCGVisitor, null);
+            rights.get(i).accept(valueCGVisitor, null);
+            cg.store(rights.get(i).getType().getSuffix());
+        }
+        return null;
+    }
+
+
 
     /*
     execute[[write: stmt1 -> expression]] =

@@ -1,0 +1,58 @@
+/* 
+IMPORTANT: This activity can be done *only* when input1.txt is finished.
+Remember to create a copy of the previous activity to not modify it.
+
+Add the additional language extensions to your compiler: 
+ - The RHS could be one single expression, which type is promotable to all the types of the LHS.
+ - Make sure the order is the same as in Python. For example, given the following example:
+ 	x = 1; y = 2;
+ 	x, y = x+y, y+x;
+   After the evaluation, x==3 and y==3. If it does not work that way, change it.
+*/
+
+char myChar;
+
+void right(char charp, int intp, double doublep) { 
+	int myInt, x, y;
+	double myDouble;
+	char[5] charArray;
+	struct { double field; } record;
+	
+	myChar, myInt, myDouble = charp, intp, doublep;
+	write myChar, myInt, myDouble; // shows a, 32, -3.4
+	
+	charArray[0], myInt, record.field = 'b', 2, -1.1;
+	write charArray[0], myInt, record.field; // shows 'b', 2, -1.1
+	
+	myChar, myInt, myDouble = 'a';
+	write myChar, myInt, myDouble;  // shows a, 97, 97
+	
+	x = 1; y = 2;
+	x, y  = x+y, y+x;
+	write x, y; // shows 3, 3
+}
+
+/* 
+The following function has compiler errors.
+Check that your compiler shows the appropriate error messages.
+Then, comment the whole function to check that the rest of the program is compiled correctly
+   and its output code runs as expected.
+*/
+void wrong() {
+	int myInt;
+	double myDouble;
+	
+	myChar, myInt = 'a', 1, 3.3; // compiler error (different number of expressions)
+	myChar, myInt = 'a'; // compiler error (different number of expressions)
+	myChar, myInt = 'a', myDouble; // compiler error (different types)
+	myInt, myChar = myDouble, 'b'; // compiler error (different types)
+	myChar, myInt+0, myDouble = 'a', 1, 2.2; // compiler error (lvalue required)	
+	
+	myInt, myChar, myDouble = 3; // compiler error (int cannot converted into char)
+	myDouble, myInt = 3.2; // compiler error (double cannot be converted into int)
+}
+
+void main() {
+	right('a', 32, -3.4); 
+	write '\n';
+}

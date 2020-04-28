@@ -1,0 +1,46 @@
+/* 
+Language extensions to be implemented by the student:
+ - Add a multiple assignment operator following a Pythonic syntax: a, b = c+1, f(d);
+ - The number of expressions in both sides of the assignments must be equal.
+ - The type of the corresponding expressions must be equivalent.
+ - All the LHS expressions must be lvalue. 
+*/
+
+char myChar;
+
+void right(char charp, int intp, double doublep) { 
+	int myInt;
+	double myDouble;
+	char[5] charArray;
+	struct { double field; } record;
+	
+	myChar, myInt, myDouble = charp, intp, doublep;
+	write myChar, myInt, myDouble; // shows a, 32, -3.4
+	
+	charArray[0], myInt, record.field = 'b', 2, -1.1;
+	write charArray[0], myInt, record.field; // shows 'b', 2, -1.1
+}
+
+/* 
+The following function has compiler errors.
+Check that your compiler shows the appropriate error messages.
+Then, comment the whole function to check that the rest of the program is compiled correctly
+   and its output code runs as expected.
+*/
+/*
+void wrong() {
+	int myInt;
+	double myDouble;
+	
+	myChar, myInt = 'a', 1, 3.3; // compiler error (different number of expressions)
+	myChar, myInt = 'a'; // compiler error (different number of expressions)
+	myChar, myInt = 'a', myDouble; // compiler error (different types)
+	myInt, myChar = myDouble, 'b'; // compiler error (different types)
+	myChar, myInt+0, myDouble = 'a', 1, 2.2; // compiler error (lvalue required)	
+}
+*/
+
+void main() {
+	right('a', 32, -3.4); 
+	write '\n';
+}

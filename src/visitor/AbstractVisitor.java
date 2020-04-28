@@ -37,6 +37,13 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR> {
     }
 
     @Override
+    public TR visit(MultipleAssignment multipleAssignment, TP param){
+        multipleAssignment.getLefts().forEach(e -> e.accept(this, null));
+        multipleAssignment.getRights().forEach(e -> e.accept(this, null));
+        return null;
+    }
+
+    @Override
     public TR visit(FunctionInvocation functionInvocation, TP param) {
         functionInvocation.getFunction().accept(this, null);
         functionInvocation.getParameters().forEach(p -> p.accept(this, null));

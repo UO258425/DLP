@@ -1,0 +1,144 @@
+
+#source "input1.txt"
+
+	' * char myChar (offset 0)
+
+' Invocation to the main function
+call main
+halt
+
+
+#line	11
+
+  right:
+	' * Parameters
+	' * char charp (offset 10)
+	' * int intp (offset 8)
+	' * real doublep (offset 4)
+	' * Local variables
+	' * int myInt (offset -2)
+	' * real myDouble (offset -6)
+	' * [5,char] charArray (offset -11)
+	' * record((field x real)) record (offset -15)
+	enter 15
+
+#line	17
+	' * Assignment
+	pusha	0
+	push	bp
+	pushi	10
+	addi
+	loadb
+	storeb
+	' * Assignment
+	push	bp
+	pushi	-2
+	addi
+	push	bp
+	pushi	8
+	addi
+	loadi
+	storei
+	' * Assignment
+	push	bp
+	pushi	-6
+	addi
+	push	bp
+	pushi	4
+	addi
+	loadf
+	storef
+
+#line	18
+	' * Write
+	pusha	0
+	loadb
+	outb
+	' * Write
+	push	bp
+	pushi	-2
+	addi
+	loadi
+	outi
+	' * Write
+	push	bp
+	pushi	-6
+	addi
+	loadf
+	outf
+
+#line	20
+	' * Assignment
+	push	bp
+	pushi	-11
+	addi
+	pushi	0
+	pushi	1
+	muli
+	addi
+	pushb	98
+	storeb
+	' * Assignment
+	push	bp
+	pushi	-2
+	addi
+	pushi	2
+	storei
+	' * Assignment
+	push	bp
+	pushi	-15
+	addi
+	pushi	0
+	addi
+	pushf	0
+	pushf	1.1
+	subf
+	storef
+
+#line	21
+	' * Write
+	push	bp
+	pushi	-11
+	addi
+	pushi	0
+	pushi	1
+	muli
+	addi
+	loadb
+	outb
+	' * Write
+	push	bp
+	pushi	-2
+	addi
+	loadi
+	outi
+	' * Write
+	push	bp
+	pushi	-15
+	addi
+	pushi	0
+	addi
+	loadf
+	outf
+	ret 0, 15, 7
+
+#line	43
+
+  main:
+	' * Parameters
+	' * Local variables
+	enter 0
+
+#line	44
+	pushb	97
+	pushi	32
+	pushf	0
+	pushf	3.4
+	subf
+	call	right
+
+#line	45
+	' * Write
+	pushb	10
+	outb
+	ret 0, 0, 0
