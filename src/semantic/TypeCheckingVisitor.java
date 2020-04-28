@@ -34,9 +34,9 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
      */
     @Override
     public Void visit(FunctionDefinition functionDefinition, Type param) {
-        functionDefinition.getType().accept(this,  ((FunctionType)functionDefinition.getType()).getReturnType());
+        functionDefinition.getType().accept(this, ((FunctionType) functionDefinition.getType()).getReturnType());
         functionDefinition.getStatements().forEach(
-                stmt ->stmt.accept(this,((FunctionType)functionDefinition.getType()).getReturnType()));
+                stmt -> stmt.accept(this, ((FunctionType) functionDefinition.getType()).getReturnType()));
         functionDefinition.setLvalue(false);
         return null;
     }
@@ -65,33 +65,44 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     }
 
     @Override
-    public Void visit(MultipleAssignment multipleAssignment, Type param){
+    public Void visit(MultipleAssignment multipleAssignment, Type param) {
         multipleAssignment.getLefts().forEach(e -> e.accept(this, param));
 
-        multipleAssignment.getLefts().forEach(e ->{
-            if(!e.isLvalue())
+        multipleAssignment.getLefts().forEach(e -> {
+            if (!e.isLvalue())
                 new ErrorType(e.getLine(), e.getColumn(), "lvalue expected");
         });
 
         multipleAssignment.getRights().forEach(e -> e.accept(this, param));
         multipleAssignment.setLvalue(false);
 
-        if(multipleAssignment.getLefts().size() != multipleAssignment.getRights().size()) {
-            new ErrorType(multipleAssignment.getLine(), multipleAssignment.getColumn(), "There must be the same number of expression in both sides");
-            return null;
-        }
-
         List<Expression> lefts = multipleAssignment.getLefts();
         List<Expression> rights = multipleAssignment.getRights();
 
-        for(int i = 0;i<lefts.size();i++){
-            if(!(lefts.get(i).getType() instanceof ErrorType) && !(rights.get(i).getType() instanceof  ErrorType)){
-                if(!lefts.get(i).getType().equivalent(rights.get(i).getType()))
-                    new ErrorType(rights.get(i).getLine(), rights.get(i).getColumn(), "Not equivalent types, trying to assign "+
-                     rights.get(i).getType() +" to "+ lefts.get(i).getType());
+        if (rights.size() == 1) {
+            for (Expression e : lefts) {
+                if (!rights.get(0).getType().equivalent(e.getType()))
+                    new ErrorType(e.getLine(), e.getColumn(), "type error: " + rights.get(0).getType() + " cannot be converted to " + e.getType());
+
+            }
+        } else {
+            if (lefts.size() != rights.size()) {
+                new ErrorType(multipleAssignment.getLine(), multipleAssignment.getColumn(), "There must be the same number of expression in both sides");
+                return null;
             }
 
+            for (int i = 0; i < lefts.size(); i++) {
+                if (!(lefts.get(i).getType() instanceof ErrorType) && !(rights.get(i).getType() instanceof ErrorType)) {
+                    if (!lefts.get(i).getType().equivalent(rights.get(i).getType()))
+                        new ErrorType(rights.get(i).getLine(), rights.get(i).getColumn(), "Not equivalent types, trying to assign " +
+                                rights.get(i).getType() + " to " + lefts.get(i).getType());
+                }
+
+            }
+
+
         }
+
 
         return null;
     }
@@ -121,7 +132,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         ifElse.getElseBody().forEach(x -> x.accept(this, param));
         ifElse.setLvalue(false);
 
-        if(!ifElse.getCondition().getType().isBoolean())
+        if (!ifElse.getCondition().getType().isBoolean())
             new ErrorType(ifElse.getLine(), ifElse.getColumn(), "Condition of an if must be boolean");
         return null;
     }
@@ -144,7 +155,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     public Void visit(Return returnStatement, Type param) {
         returnStatement.getReturned().accept(this, param);
         returnStatement.setLvalue(false);
-        if(!returnStatement.getReturned().getType().equivalent(param))
+        if (!returnStatement.getReturned().getType().equivalent(param))
             new ErrorType(returnStatement.getLine(), returnStatement.getColumn(), "The returned type does not match the return type of the function");
         return null;
     }
@@ -169,7 +180,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     public Void visit(Write write, Type param) {
         write.getExpression().accept(this, param);
         write.setLvalue(false);
-        if(!write.getExpression().getType().isWritable())
+        if (!write.getExpression().getType().isWritable())
             new ErrorType(write.getExpression().getLine(), write.getExpression().getColumn(),
                     "Error: Trying to write a non writable type");
         return null;
@@ -244,7 +255,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
      * exp1.type = exp2.type.comparison(expression3.type, exp1)
      */
     @Override
-    public Void visit(ComparisonExpression comparisonExpression, Type param){
+    public Void visit(ComparisonExpression comparisonExpression, Type param) {
         comparisonExpression.getLeft().accept(this, param);
         comparisonExpression.getRight().accept(this, param);
         comparisonExpression.setLvalue(false);
@@ -292,7 +303,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     @Override
     public Void visit(Variable variable, Type param) {
         variable.setLvalue(true);
-        if(variable.getDefinition() == null)
+        if (variable.getDefinition() == null)
             variable.setType(new ErrorType(variable.getLine(), variable.getColumn(), "The variable is not defined."));
         else
             variable.setType(variable.getDefinition().getType());

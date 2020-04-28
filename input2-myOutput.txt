@@ -1,0 +1,255 @@
+
+#source "input2.txt"
+
+	' * char myChar (offset 0)
+
+' Invocation to the main function
+call main
+halt
+
+
+#line	15
+
+  right:
+	' * Parameters
+	' * char charp (offset 10)
+	' * int intp (offset 8)
+	' * real doublep (offset 4)
+	' * Local variables
+	' * int myInt (offset -2)
+	' * int x (offset -4)
+	' * int y (offset -6)
+	' * real myDouble (offset -10)
+	' * [5,char] charArray (offset -15)
+	' * record((field x real)) record (offset -19)
+	enter 19
+
+#line	21
+	' * Assignment
+	pusha	0
+	push	bp
+	pushi	10
+	addi
+	loadb
+	storeb
+	' * Assignment
+	push	bp
+	pushi	-2
+	addi
+	push	bp
+	pushi	8
+	addi
+	loadi
+	storei
+	' * Assignment
+	push	bp
+	pushi	-10
+	addi
+	push	bp
+	pushi	4
+	addi
+	loadf
+	storef
+
+#line	22
+	' * Write
+	pusha	0
+	loadb
+	outb
+	' * Write
+	push	bp
+	pushi	-2
+	addi
+	loadi
+	outi
+	' * Write
+	push	bp
+	pushi	-10
+	addi
+	loadf
+	outf
+
+#line	23
+	' * Write
+	pushb	10
+	outb
+
+#line	24
+	' * Assignment
+	push	bp
+	pushi	-15
+	addi
+	pushi	0
+	pushi	1
+	muli
+	addi
+	pushb	98
+	storeb
+	' * Assignment
+	push	bp
+	pushi	-2
+	addi
+	pushi	2
+	storei
+	' * Assignment
+	push	bp
+	pushi	-19
+	addi
+	pushi	0
+	addi
+	pushf	0
+	pushf	1.1
+	subf
+	storef
+
+#line	25
+	' * Write
+	push	bp
+	pushi	-15
+	addi
+	pushi	0
+	pushi	1
+	muli
+	addi
+	loadb
+	outb
+	' * Write
+	push	bp
+	pushi	-2
+	addi
+	loadi
+	outi
+	' * Write
+	push	bp
+	pushi	-19
+	addi
+	pushi	0
+	addi
+	loadf
+	outf
+
+#line	26
+	' * Write
+	pushb	10
+	outb
+
+#line	27
+	' * Assignment
+	pusha	0
+	pushb	97
+	storeb
+	' * Assignment
+	push	bp
+	pushi	-2
+	addi
+	pushb	97
+	storeb
+	' * Assignment
+	push	bp
+	pushi	-10
+	addi
+	pushb	97
+	storeb
+
+#line	28
+	' * Write
+	pusha	0
+	loadb
+	outb
+	' * Write
+	push	bp
+	pushi	-2
+	addi
+	loadi
+	outi
+	' * Write
+	push	bp
+	pushi	-10
+	addi
+	loadf
+	outf
+
+#line	29
+	' * Write
+	pushb	10
+	outb
+
+#line	30
+	' * Assignment
+	push	bp
+	pushi	-4
+	addi
+	pushi	1
+	storei
+	' * Assignment
+	push	bp
+	pushi	-6
+	addi
+	pushi	2
+	storei
+
+#line	31
+	' * Assignment
+	push	bp
+	pushi	-4
+	addi
+	push	bp
+	pushi	-4
+	addi
+	loadi
+	push	bp
+	pushi	-6
+	addi
+	loadi
+	addi
+	storei
+	' * Assignment
+	push	bp
+	pushi	-6
+	addi
+	push	bp
+	pushi	-6
+	addi
+	loadi
+	push	bp
+	pushi	-4
+	addi
+	loadi
+	addi
+	storei
+
+#line	32
+	' * Write
+	push	bp
+	pushi	-4
+	addi
+	loadi
+	outi
+	' * Write
+	push	bp
+	pushi	-6
+	addi
+	loadi
+	outi
+	ret 0, 19, 7
+
+#line	55
+
+  main:
+	' * Parameters
+	' * Local variables
+	enter 0
+
+#line	56
+	pushb	97
+	pushi	32
+	pushf	0
+	pushf	3.4
+	subf
+	call	right
+
+#line	57
+	' * Write
+	pushb	10
+	outb
+	ret 0, 0, 0

@@ -47,19 +47,23 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
     }
 
     @Override
-    public Void visit(MultipleAssignment multipleAssignment, int[] param){
+    public Void visit(MultipleAssignment multipleAssignment, int[] param) {
         List<Expression> lefts = multipleAssignment.getLefts();
         List<Expression> rights = multipleAssignment.getRights();
 
-        for(int i = 0;i<lefts.size();i++){
+        for (int i = 0; i < lefts.size(); i++) {
             cg.comment("Assignment");
             lefts.get(i).accept(addressCGVisitor, null);
-            rights.get(i).accept(valueCGVisitor, null);
-            cg.store(rights.get(i).getType().getSuffix());
+            if (rights.size() == 1) {
+                rights.get(0).accept(valueCGVisitor, null);
+                cg.store(rights.get(0).getType().getSuffix());
+            } else {
+                rights.get(i).accept(valueCGVisitor, null);
+                cg.store(lefts.get(i).getType().getSuffix());
+            }
         }
         return null;
     }
-
 
 
     /*
@@ -165,8 +169,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
 
         cg.enter(bytesLocalVariables);
 
-        int[] retParams={};
-        if(!(functionType.getReturnType() instanceof VoidType))
+        int[] retParams = {};
+        if (!(functionType.getReturnType() instanceof VoidType))
             retParams = new int[]{functionType.getReturnType().getNumberOfBytes(), bytesLocalVariables, bytesParameters};
 
         for (Statement st : functionDefinition.getStatements()) {
@@ -193,7 +197,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<int[], Void> {
                 .filter(st -> st instanceof VariableDefinition)
                 .map(vd -> ((VariableDefinition) vd).getType().getNumberOfBytes())
                 .mapToInt(Integer::intValue)
-                .sum() ;
+                .sum();
     }
 
     /*

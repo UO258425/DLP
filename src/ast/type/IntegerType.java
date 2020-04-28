@@ -68,7 +68,8 @@ public class IntegerType extends AbstractType {
 
     @Override
     public boolean equivalent(Type t) {
-        return t instanceof IntegerType;
+
+        return (t instanceof CharacterType || t instanceof IntegerType);
     }
 
     @Override
